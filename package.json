@@ -1,0 +1,12 @@
+{
+  "name": "ucla-chat",
+  "version": "1.0.0",
+  "description": "bridging a bunch of chats together",
+  "main": "index.js",
+  "repository": "https://git.jon-e.net/jonny/ucla-chat",
+  "author": "sneakers-the-rat <JLSaunders987@gmail.com>",
+  "license": "AGPL-3.0",
+  "dependencies": {
+    "@slack/oauth": "^2.6.1"
+  }
+}
