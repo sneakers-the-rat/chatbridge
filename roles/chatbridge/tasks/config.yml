@@ -1,0 +1,24 @@
+- name: create development .env
+  become: yes
+  become_user: "{{ chatbridge_user }}"
+  template:
+    src: chatbridge_env.j2
+    dest: "{{ chatbridge_user_home}}/.env"
+
+- name: create nginx config
+  become: yes
+  template:
+    src: nginx_chatbridge.conf.j2
+    dest: /etc/nginx/sites-available/chatbridge.conf
+
+- name: link nginx config
+  become: yes
+  file:
+    state: link
+    src: /etc/nginx/sites-available/chatbridge.conf
+    dest: /etc/nginx/sites-enabled/chatbridge.conf
+
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted

@@ -1,0 +1,17 @@
+---
+# defaults file for chatbridge
+
+chatbridge_postgres_user: chatbridge
+chatbridge_postgres_password: CHANGEME
+chatbridge_postgres_db: chatbridge
+chatbridge_postgres_port: 6500
+
+chatbridge_user: chatbridge
+chatbridge_user_home: /var/lib/chatbridge
+
+# Where, beneath the root domain, we should host the site
+# (used in nginx configs)
+chatbridge_fqdn: localhost
+chatbridge_webroot: ""
+chatbridge_api_port: 8999
+

@@ -1,0 +1,16 @@
+
+- name: include variable checks
+  import_tasks: checks.yml
+
+- name: include user config
+  import_tasks: user.yml
+
+- name: include postgres config
+  import_tasks: postgres.yml
+
+- name: install chatbridge
+  import_tasks: chatbridge.yml
+
+- name: configure chatbridge
+  import_tasks: config.yml
+

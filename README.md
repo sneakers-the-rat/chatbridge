@@ -1,4 +1,4 @@
-# ucla-chat
+# chatbridge
 
 Invite people to a bridged nextcloud chat with a token
 
@@ -25,6 +25,9 @@ Use the ansible role!!!
 ## References
 
 idk i'm just learnin
+
+- https://typeorm.io/active-record-data-mapper#what-is-the-active-record-pattern
+  - https://typeorm.io/example-with-express
 - https://github.com/wpcodevo/node_typeorm/tree/restapi-node-typeorm
 - https://www.axllent.org/docs/nodejs-service-with-systemd/
 - https://github.com/wpcodevo/Blog_MUI_React-hook-form/tree/login-signup-form

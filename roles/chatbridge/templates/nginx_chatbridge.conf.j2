@@ -1,0 +1,36 @@
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name {{ chatbridge_fqdn }};
+
+    location {{ chatbridge_webroot }}/api/ {
+        proxy_pass http://127.0.0.1:{{ chatbridge_api_port }}/;
+    }
+
+    location {{ chatbridge_webroot }}/ {
+        root {{ chatbridge_user_home }}/public;
+        try_files $uri $uri/ =404;
+    }
+
+    ssl_certificate /etc/letsencrypt/live/{{ chatbridge_fqdn }}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/{{ chatbridge_fqdn }}/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name {{ chatbridge_fqdn }};
+
+    location /.well-known/acme-challenge {
+        root /var/www/letsencrypt;
+        try_files $uri $uri/ =404;
+    }
+
+    location / {
+        rewrite ^ https://{{ chatbridge_fqdn }}$request_uri? permanent;
+    }
+}

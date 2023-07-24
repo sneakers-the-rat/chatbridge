@@ -1,0 +1,11 @@
+namespace: "sneakers_the_rat"
+name: "chatbridge"
+version: 0.1.0
+readme: README.md
+authors: ["Jonny Saunders <j@nny.fyi>"]
+description: Ansible roles for managing chatbridge!
+repository: https://git.jon-e.net/jonny/chatbridge
+
+manifest:
+  directives:
+    - graft roles

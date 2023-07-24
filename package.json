@@ -1,5 +1,5 @@
 {
-  "name": "ucla-chat",
+  "name": "chatbridge",
   "version": "1.0.0",
   "description": "bridging a bunch of chats together",
   "main": "index.js",
@@ -12,10 +12,14 @@
     "typeorm": "typeorm-ts-node-commonjs",
     "migrate": "rm -rf build && yarn build && yarn typeorm migration:generate ./src/migrations/added-user-entity -d ./src/utils/data-source.ts",
     "db:push": "rm -rf build && yarn build && yarn typeorm migration:run -d src/utils/data-source.ts",
-    "importData": "npx ts-node-dev --transpile-only --exit-child  src/data/seeder.ts"
+    "importData": "npx ts-node-dev --transpile-only --exit-child  src/data/seeder.ts",
+    "client_start": "react-scripts start",
+    "client_build": "react-scripts build",
+    "client_eject": "react-scripts eject"
   },
   "dependencies": {
     "@slack/oauth": "^2.6.1",
+    "config": "^3.3.9",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -26,6 +30,7 @@
     "pug": "^3.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
     "redis": "^4.6.7",
     "typeorm": "^0.3.17",
     "typescript": "^5.1.6",
@@ -40,5 +45,11 @@
     "@types/pug": "^2.0.6",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   }
 }
