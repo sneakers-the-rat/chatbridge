@@ -3,7 +3,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import config from 'config';
 import cors from 'cors';
 import { AppDataSource } from './db/data-source';
-
+import AppError from './errors/appError';
 
 
 

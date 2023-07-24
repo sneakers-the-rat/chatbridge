@@ -13,7 +13,7 @@ server {
     }
 
     location {{ chatbridge_webroot }}/ {
-        rewrite ^{{ chatbridge_webroot }}/?(.*)$ $1 break;
+        rewrite ^{{ chatbridge_webroot }}?(/.*)$ $1 break;
         root {{ chatbridge_user_home }}/public;
         try_files $uri $uri/ $uri/index.html =404;
     }

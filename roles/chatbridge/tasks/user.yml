@@ -14,11 +14,20 @@
     system: true
 
 
+
 - name: Create public directory and give permissions to www-data
   become: yes
   file:
-    mode: '660'
+    mode: '755'
     state: directory
     group: "www-data"
     owner: "{{ chatbridge_user }}"
     path: "{{ chatbridge_user_home }}/public"
+
+- name: Chmod home directory
+  become: yes
+  file:
+    mode: '755'
+    state: directory
+    group: "www-data"
+

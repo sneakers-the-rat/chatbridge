@@ -4,6 +4,7 @@
   template:
     src: chatbridge_env.j2
     dest: "{{ chatbridge_user_home}}/.env"
+    mode: "600"
 
 - name: create https nginx config
   become: yes
@@ -20,6 +21,7 @@
   template:
     src: nginx_chatbridge_http.conf.j2
     dest: /etc/nginx/sites-available/chatbridge.conf
+
   when:
     - chatbridge_https is defined
     - not chatbridge_https
