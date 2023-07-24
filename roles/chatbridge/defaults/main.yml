@@ -15,3 +15,5 @@ chatbridge_fqdn: localhost
 chatbridge_webroot: ""
 chatbridge_api_port: 8999
 
+# false gives you an http-only nginx config
+chatbridge_https: true

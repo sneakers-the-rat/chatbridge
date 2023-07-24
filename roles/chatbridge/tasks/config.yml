@@ -5,11 +5,26 @@
     src: chatbridge_env.j2
     dest: "{{ chatbridge_user_home}}/.env"
 
-- name: create nginx config
+- name: create https nginx config
   become: yes
   template:
     src: nginx_chatbridge.conf.j2
     dest: /etc/nginx/sites-available/chatbridge.conf
+  when:
+    - chatbridge_https is defined
+    - chatbridge_https | bool
+  notify: restart nginx
+
+- name: create http nginx config
+  become: yes
+  template:
+    src: nginx_chatbridge_http.conf.j2
+    dest: /etc/nginx/sites-available/chatbridge.conf
+  when:
+    - chatbridge_https is defined
+    - not chatbridge_https
+  notify: restart nginx
+
 
 - name: link nginx config
   become: yes
@@ -18,7 +33,3 @@
     src: /etc/nginx/sites-available/chatbridge.conf
     dest: /etc/nginx/sites-enabled/chatbridge.conf
 
-- name: restart nginx
-  service:
-    name: nginx
-    state: restarted

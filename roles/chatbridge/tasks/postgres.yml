@@ -1,0 +1,41 @@
+- name: install postgresql
+  become: yes
+  apt:
+    state: present
+    package:
+      - postgresql
+      - postgresql-client
+      - python3-psycopg2
+
+- name: postgres is enabled and running
+  become: yes
+  systemd:
+    name: postgresql
+    enabled: true
+    state: started
+
+- name: create postgres user
+  become: yes
+  become_user: postgres
+  postgresql_user:
+    name: "{{ chatbridge_postgres_user }}"
+    password: "{{ chatbridge_postgres_password }}"
+    state: present
+
+- name: create postgres database
+  become: yes
+  become_user: postgres
+  postgresql_db:
+    name: "{{ chatbridge_postgres_db }}"
+    state: present
+    owner: "{{ chatbridge_postgres_user }}"
+
+- name: assign postgres privileges
+  become: yes
+  become_user: postgres
+  postgresql_privs:
+    database: "{{ chatbridge_postgres_db }}"
+    state: present
+    privs: ALL
+    type: database
+    role: "{{ chatbridge_postgres_user }}"

@@ -1,0 +1,21 @@
+server {
+    listen 80;
+    listen [::]:80;
+    server_name {{ chatbridge_fqdn }};
+
+    location {{ chatbridge_webroot }}/api/ {
+        proxy_pass http://127.0.0.1:{{ chatbridge_api_port }}/;
+    }
+
+    location {{ chatbridge_webroot }} {
+        root {{ chatbridge_user_home }}/public;
+        try_files $uri $uri/ $uri/index.html /index.html index.html;
+    }
+
+    location {{ chatbridge_webroot }}/ {
+        rewrite ^{{ chatbridge_webroot }}/?(.*)$ $1 break;
+        root {{ chatbridge_user_home }}/public;
+        try_files $uri $uri/ $uri/index.html =404;
+    }
+
+}

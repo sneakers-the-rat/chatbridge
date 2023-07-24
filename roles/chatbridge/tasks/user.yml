@@ -1,0 +1,24 @@
+- name: Create chatbridge group
+  group:
+    name: "{{ chatbridge_user }}"
+    system: true
+    state: present
+
+- name: Create chatbridge user and home directory
+  become: yes
+  user:
+    name: "{{ chatbridge_user }}"
+    state: present
+    group: "{{ chatbridge_user }}"
+    home: "{{ chatbridge_user_home }}"
+    system: true
+
+
+- name: Create public directory and give permissions to www-data
+  become: yes
+  file:
+    mode: '660'
+    state: directory
+    group: "www-data"
+    owner: "{{ chatbridge_user }}"
+    path: "{{ chatbridge_user_home }}/public"

@@ -5,6 +5,6 @@
     repo: https://git.jon-e.net/jonny/chatbridge
     dest: "{{ chatbridge_user_home }}/chatbridge"
     version: "HEAD"
-  failed_when: "command_result.failed and 'Local modifications' not in command_result.msg"
+#  failed_when: "command_result.failed and 'Local modifications' not in command_result.msg"
 
 
