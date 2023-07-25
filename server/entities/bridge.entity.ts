@@ -20,6 +20,18 @@ export class Bridge extends Model {
     @Column()
     Label: string;
 
+    // The ID of the team
+    @Column({nullable:true})
+    team_id: string;
+
+    @Column({nullable:true})
+    team_name: string;
+
+    @Column({
+        unique: true
+    })
+    Token: string;
+
     @Column({
         default: true
     })
@@ -31,10 +43,7 @@ export class Bridge extends Model {
     })
     RemoteNickFormat: string;
 
-    @Column({
-        unique: true
-    })
-    Token: string;
+
 
     @OneToMany(() => Channel, (channel) => channel.bridge)
     channels: Channel[]

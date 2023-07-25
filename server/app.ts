@@ -8,6 +8,7 @@ import { AppDataSource } from './db/data-source';
 import AppError from './errors/appError';
 
 import groupRoutes from "./routes/group.routes";
+import slackRoutes from "./routes/slack.routes";
 
 
 
@@ -24,6 +25,13 @@ AppDataSource.initialize()
     })
 
     app.use('/groups', groupRoutes);
+
+    // app.use('/slack', async (req:Request, res:Response) => {
+    //     console.log(req)
+    //     let code = req.query.code;
+    // });
+
+    app.use('/slack', slackRoutes);
 
     app.all('*', (req: Request, res: Response, next: NextFunction) => {
       next(new AppError(404, `Route ${req.originalUrl} not found`));

@@ -7,5 +7,10 @@ export default {
         password: 'POSTGRES_PASSWORD',
         database: 'POSTGRES_DB',
     },
+    slackConfig: {
+        client_id: 'SLACK_CLIENT_ID',
+        client_secret: 'SLACK_CLIENT_SECRET',
+        signing_secret: 'SLACK_SIGNING_SECRET'
+    },
     admin_token: 'ADMIN_TOKEN'
 }
