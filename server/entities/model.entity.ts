@@ -14,4 +14,6 @@ export default abstract class Model extends BaseEntity {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    
 }

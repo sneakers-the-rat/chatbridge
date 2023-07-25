@@ -7,7 +7,7 @@
   "author": "sneakers-the-rat <JLSaunders987@gmail.com>",
   "license": "AGPL-3.0",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only --exit-child src/app.ts",
+    "start": "ts-node-dev --respawn --transpile-only --exit-child server/app.ts",
     "build": "tsc -p .",
     "typeorm": "typeorm-ts-node-commonjs",
     "migrate": "rm -rf build && yarn build && yarn typeorm migration:generate ./src/migrations/added-user-entity -d ./src/utils/data-source.ts",
@@ -32,6 +32,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "^5.0.1",
     "redis": "^4.6.7",
+    "reflect-metadata": "^0.1.13",
     "typeorm": "^0.3.17",
     "typescript": "^5.1.6",
     "zod": "^3.21.4"

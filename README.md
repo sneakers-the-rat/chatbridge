@@ -1,5 +1,7 @@
 # chatbridge
 
+Testing running
+
 Invite people to a bridged nextcloud chat with a token
 
 Using matterbridge - https://github.com/42wim/matterbridge
