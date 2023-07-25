@@ -7,6 +7,13 @@ server {
         proxy_pass http://127.0.0.1:{{ chatbridge_api_port }}/;
     }
 
+    {% if CHATBRIDGE_MODE == "development" %}
+    location {{ chatbridge_webroot }}/ {
+      proxy_pass http://127.0.0.1:{{ chatbridge_webpack_port }}/;
+    }
+
+    {% else %}
+
     location {{ chatbridge_webroot }} {
         root {{ chatbridge_user_home }}/public;
         try_files $uri $uri/ $uri/index.html /index.html index.html;
@@ -17,5 +24,6 @@ server {
         root {{ chatbridge_user_home }}/public;
         try_files $uri $uri/ $uri/index.html =404;
     }
+    {% endif %}
 
 }
