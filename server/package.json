@@ -1,0 +1,45 @@
+{
+  "name": "chatbridge",
+  "version": "1.0.0",
+  "description": "bridging a bunch of chats together",
+  "main": "index.js",
+  "repository": "https://git.jon-e.net/jonny/ucla-chat",
+  "author": "sneakers-the-rat <JLSaunders987@gmail.com>",
+  "license": "AGPL-3.0",
+  "private": true,
+  "scripts": {
+    "start": "ts-node-dev --respawn --transpile-only --exit-child src/app.ts",
+    "build": "../node_modules/.bin/tsc -p .",
+    "typeorm": "../node_modules/.bin/typeorm-ts-node-commonjs",
+    "migrate": "rm -rf build && yarn build && yarn ../node_modules/.bin/typeorm migration:generate ./src/migrations/added-user-entity -d ./src/utils/data-source.ts",
+    "db:push": "rm -rf build && yarn build && yarn ../node_modules/.bin/typeorm migration:run -d src/utils/data-source.ts",
+    "importData": "npx ts-node-dev --transpile-only --exit-child  src/data/seeder.ts"
+  },
+  "dependencies": {
+    "@slack/oauth": "^2.6.1",
+    "config": "^3.3.9",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.8.0",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.1",
+    "pg": "^8.11.1",
+    "pug": "^3.0.2",
+    "redis": "^4.6.7",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "^0.3.17",
+    "typescript": "^5.1.6",
+    "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@types/config": "^3.3.0",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/node": "^20.4.2",
+    "@types/pug": "^2.0.6",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0"
+  }
+}
