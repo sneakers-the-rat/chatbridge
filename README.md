@@ -1,12 +1,12 @@
 # chatbridge
 
-Testing running
+Like guppe groups but for slack, discord, matrix, etc.
 
-Invite people to a bridged nextcloud chat with a token
+Invite people to a matterbridge group with a token
 
 Using matterbridge - https://github.com/42wim/matterbridge
 
-Also see https://galaxy.ansible.com/jwflory/matterbridge
+Very unfinished!! Mostly a programming exercise for me for now to practice fullstack. Theoretically it should be possible to reuse this but i make no guarantees especially while it is yno unfinished and potentially insecure. run at your own risk!
 
 ## Supported Clients 
 
@@ -37,3 +37,4 @@ idk i'm just learnin
 - https://www.react.express/
 - https://www.typescriptlang.org/docs/handbook/tsconfig-json.html
 	- https://www.typescriptlang.org/docs/handbook/compiler-options.html
+- https://galaxy.ansible.com/jwflory/matterbridge
