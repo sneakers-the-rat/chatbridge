@@ -5,9 +5,9 @@ export const createGroupSchema = object({
         name: string({
             required_error: "Name for group required"
         }),
-        token: string({
-            required_error: "Administration token required for creating groups"
-        })
+        // token: string({
+        //     required_error: "Administration token required for creating groups"
+        // })
     })
 })
 

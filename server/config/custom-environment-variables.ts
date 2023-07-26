@@ -12,5 +12,9 @@ export default {
         client_secret: 'SLACK_CLIENT_SECRET',
         signing_secret: 'SLACK_SIGNING_SECRET'
     },
-    admin_token: 'ADMIN_TOKEN'
+    admin_token: 'ADMIN_TOKEN',
+    cookies:{
+        key1: 'COOKIE_KEY_1',
+        key2: 'COOKIE_KEY_2'
+    }
 }

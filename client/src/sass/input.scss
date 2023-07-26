@@ -1,0 +1,50 @@
+.InputSlot {
+  min-width: 320px;
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+}
+
+.Panel .Input {
+  width: 100%;
+}
+
+.InputGroup {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+  align-items: flex-start;
+
+
+
+  .Input {
+    flex-basis: 70%;
+  }
+
+  .MuiButton-root {
+    flex-basis: 30%;
+    flex-grow:0;
+    height: 56px;
+  }
+
+}
+
+//.MuiButton-root {
+//  font-family: IBM Plex Sans, sans-serif;
+//  font-weight: 600;
+//  font-size: 0.875rem;
+//  line-height: 1.5;
+//  background-color: $color-primary;
+//  padding: 8px 16px;
+//  border-radius: 8px;
+//  color: black;
+//  transition: all 150ms ease;
+//  cursor: pointer;
+//  border: none;
+//  box-shadow: 0px 4px 30px black;
+//
+//  &:hover{
+//    background-color: $color-primary-darker;
+//  }
+//
+//}

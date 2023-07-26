@@ -10,12 +10,13 @@ import {
 } from "../schemas/group.schema";
 
 import { validate } from "../middleware/validate";
+import { requireAdmin } from "../middleware/cookies";
 
 const router = express.Router();
 
 router
     .route('/')
-    .post(createGroupHandler)
-    .get(getGroupHandler)
+    .post(validate(createGroupSchema), requireAdmin, createGroupHandler)
+    .get(requireAdmin, getGroupHandler)
 
 export default router

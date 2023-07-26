@@ -1,0 +1,45 @@
+
+.ModePanel {
+  max-width: 80%;
+  margin: auto;
+
+  .TabsList {
+    min-width: 400px;
+    background-color: transparent;
+    border-radius: 12px;
+    margin: {
+      top: 12px;
+      bottom: 12px;
+      left: auto;
+      right: auto;
+    }
+    border: 5px solid $color-primary;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-content: space-between;
+
+    .Tab {
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: white;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      background-color: transparent;
+      width: 100%;
+      line-height: 1.5;
+      padding: 8px 12px;
+      margin: 6px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: center;
+      border: none;
+    }
+
+    .Tab.Mui-selected {
+      background-color: $color-primary;
+      color: $color-background;
+    }
+
+  }
+}

@@ -8,9 +8,18 @@ const common = require('./webpack.common.js')
 module.exports = merge(common, {
   // Set the mode to development or production
   mode: 'development',
-  watch: true,
-  watchOptions: {
-    ignored: '**/node_modules/',
+  // watch: true,
+  // watchOptions: {
+  //   ignored: '**/node_modules/',
+  // },
+
+  devServer: {
+    // watchOptions: {
+    //   ignored: '**/node_modules/'
+    // },
+    client: {
+      webSocketURL: 'auto://0.0.0.0:0/ws'
+    },
   },
 
   // Control how source maps are generated

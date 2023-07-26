@@ -14,6 +14,9 @@ export class Group extends Model {
     })
     enable: boolean;
 
+    @Column()
+    invite_token: string;
+
     @OneToMany(() => Channel, (channel) => channel.bridge)
     channels: Channel[]
 
