@@ -1,5 +1,9 @@
 ---
 # defaults file for chatbridge
+CHATBRIDGE_MODE: development
+
+# development options
+chatbridge_webpack_port: 8080
 
 chatbridge_postgres_user: chatbridge
 chatbridge_postgres_password: CHANGEME
