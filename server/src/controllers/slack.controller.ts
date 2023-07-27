@@ -5,6 +5,7 @@ import {AppDataSource} from "../db/data-source";
 import {Bridge} from "../entities/bridge.entity";
 import {Group} from "../entities/group.entity";
 import { randomUUID } from "crypto";
+import {log} from "util";
 
 const scopes = ['bot', 'channels:write', 'chat:write:bot', 'chat:write:user', 'users.profile:read'];
 const bridgeRepository = AppDataSource.getRepository(Bridge)
@@ -39,6 +40,29 @@ export const SlackInstallHandler = async(
         metadata: {'name':'my-slack-name','group':'MyGroup'}
     });
 }
+
+export const SlackInstallLinkHandler = async(
+    req: Request,
+    res: Response
+) => {
+    let login_token = randomUUID()
+
+    const url = await installer.generateInstallUrl({
+        scopes,
+        metadata: {token: login_token, group: req.query.group}
+    });
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            url,
+            login_token
+        }
+    })
+
+}
+
+
 
 
 export const SlackCallbackHandler = async(

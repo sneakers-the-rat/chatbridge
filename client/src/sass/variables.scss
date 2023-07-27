@@ -1,4 +1,7 @@
 $color-primary: #DED03A;
 $color-primary-darker: scale-color($color-primary, $lightness: -10%);
+$color-primary-background: adjust-color($color-primary, $alpha: -0.9, $saturation: -50%);
+$color-primary-border: adjust-color($color-primary, $alpha: -0.9, $lightness: 50%, $saturation: -50%);
 $color-secondary: #A167A5;
 $color-background: #1C1B22;
+$color-text: white;

@@ -50,9 +50,9 @@ AppDataSource.initialize()
 
     console.log(`Server started on port: ${port}`)
 
-    await MatterbridgeManager.spawnAll();
-    console.log('Spawned group processes:');
-    let proclist = await MatterbridgeManager.processes;
-    console.log(proclist);
+    // await MatterbridgeManager.spawnAll();
+    // console.log('Spawned group processes:');
+    // let proclist = await MatterbridgeManager.processes;
+    // console.log(proclist);
 
   })

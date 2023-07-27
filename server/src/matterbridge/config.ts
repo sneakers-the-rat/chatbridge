@@ -153,7 +153,6 @@ export const GatewayToTOML = (gateway: Gateway) => {
     protocols[bridge.protocol][bridge.name] = TOML.Section(bridgeEntry)
 
   })
-  console.log('protocols', protocols)
 
   return {
     ...protocols,

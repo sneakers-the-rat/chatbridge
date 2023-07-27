@@ -19,7 +19,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "NODE_ENV=development webpack -c ./config/webpack.dev.js --mode development",
+    "start": "NODE_ENV=development webpack serve -c ./config/webpack.dev.js --mode development",
     "build": "NODE_ENV=production webpack --config ./config/webpack.prod.js",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

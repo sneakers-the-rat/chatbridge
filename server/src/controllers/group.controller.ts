@@ -73,6 +73,30 @@ export const getGroupHandler = async(
     }
 };
 
+export const getGroupWithInviteHandler = async(
+    req: Request,
+    res:Response,
+    next: NextFunction
+) => {
+    let group = await groupRepository.findOneBy({invite_token: req.body.token})
+    if (!group) {
+        return res.status(404).json({
+            status: 'failed',
+            message: `No group with matching invite code exists.`
+        })
+    } else {
+        req.session.groups = req.session.groups || [];
+        if (!req.session.groups.includes(req.body.token)) {
+            req.session.groups.push(req.body.token);
+        }
+        return res.status(200).json({
+            status: 'success',
+            data: group
+        })
+    }
+
+}
+
 export const getGroupsHandler = async(
     req: Request,
     res: Response

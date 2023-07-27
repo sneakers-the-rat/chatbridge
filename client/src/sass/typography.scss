@@ -1,0 +1,17 @@
+.section-header {
+  color: $color-text;
+  font-size: 2rem;
+  margin: {
+    top: 1rem;
+  }
+}
+
+code {
+  font: {
+    family: 'Courier', 'Courier New', monospace;
+  }
+  background-color: $color-primary-background;
+  padding: 0 0.2em;
+  border-radius: 0.1em;
+  border: 1px solid $color-primary-border;
+}

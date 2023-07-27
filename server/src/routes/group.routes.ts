@@ -2,7 +2,8 @@ import express from 'express';
 
 import {
     createGroupHandler,
-    getGroupHandler
+    getGroupHandler,
+    getGroupWithInviteHandler
 } from "../controllers/group.controller";
 
 import {
@@ -18,5 +19,9 @@ router
     .route('/')
     .post(validate(createGroupSchema), requireAdmin, createGroupHandler)
     .get(requireAdmin, getGroupHandler)
+
+router
+    .route('/invite')
+    .post(getGroupWithInviteHandler)
 
 export default router

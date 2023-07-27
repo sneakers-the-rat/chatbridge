@@ -29,6 +29,7 @@ export default function GroupPanel({
                     <TableBody>
                         {groups ? groups.map((group) => (
                             <GroupRow
+                                key = {group.id}
                                 name={group.name}
                                 id={group.id}
                                 invite_token={group.invite_token}
