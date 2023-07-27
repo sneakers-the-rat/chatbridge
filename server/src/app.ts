@@ -52,6 +52,7 @@ AppDataSource.initialize()
 
     await MatterbridgeManager.spawnAll();
     console.log('Spawned group processes:');
-    console.log(MatterbridgeManager.processes);
+    let proclist = await MatterbridgeManager.processes;
+    console.log(proclist);
 
   })

@@ -79,11 +79,11 @@ class MatterbridgeManager {
     )
   }
 
-  get processes(): Process[] {
-    let processes: Process[] = []
-    pm2.list()
-      .then((err:any, list:[]) => {
-        processes = list.map((proc:any) => {
+  get processes(): Promise<Process[]> {
+    return new Promise((resolve, reject) => {
+    pm2.list((err:any, list:[]) => {
+      if (err) reject(err);
+      else resolve(list.map((proc:any) => {
           return <Process>{
             name: proc.name,
             pid: proc.pid,
@@ -100,9 +100,8 @@ class MatterbridgeManager {
               pm_pid_path: proc.pm2_env.pm_pid_path,
             }
           }
-        })
-      })
-    return processes
+        }))
+      })})
   }
 
 }
