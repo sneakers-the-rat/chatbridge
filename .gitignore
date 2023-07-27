@@ -147,3 +147,6 @@ dist
 .DS_Store
 
 .idea
+
+matterbridge*64bit
+example.matterbridge.toml

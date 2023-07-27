@@ -45,7 +45,10 @@ export class Bridge extends Model {
 
 
 
-    @OneToMany(() => Channel, (channel) => channel.bridge)
+    @OneToMany(() => Channel, (channel) => channel.bridge,
+      {
+          cascade: ["remove"]
+      })
     channels: Channel[]
 
 }

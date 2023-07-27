@@ -14,7 +14,7 @@
     "rootDir": ".",
 
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "tests/**/*"],
   "exclude": [
     "../node_modules", "roles"]
 }

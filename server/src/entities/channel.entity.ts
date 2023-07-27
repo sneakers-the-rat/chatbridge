@@ -8,10 +8,18 @@ export class Channel extends Model {
     @Column()
     name: string;
 
-    @ManyToOne(() => Bridge, (bridge) => bridge.channels)
+    @ManyToOne(() => Bridge, (bridge) => bridge.channels,
+{
+          eager: true
+        }
+    )
     bridge: Bridge
 
-    @ManyToOne(() => Group, (group) => group.channels)
+    @ManyToOne(() => Group, (group) => group.channels,
+{
+          eager: true
+        }
+    )
     group: Group
 
 }

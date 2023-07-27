@@ -8,6 +8,13 @@ Using matterbridge - https://github.com/42wim/matterbridge
 
 Very unfinished!! Mostly a programming exercise for me for now to practice fullstack. Theoretically it should be possible to reuse this but i make no guarantees especially while it is yno unfinished and potentially insecure. run at your own risk!
 
+## TODO
+
+- [ ] Manage matterbridge processes
+- [ ] Sanitize user inputs
+- [ ] Check status of matterbridge processes
+- [ ] Complete slack login workflow
+
 ## Supported Clients 
 
 (the ones that can use the website to join)

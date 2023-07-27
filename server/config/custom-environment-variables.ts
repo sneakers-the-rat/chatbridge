@@ -16,5 +16,9 @@ export default {
     cookies:{
         key1: 'COOKIE_KEY_1',
         key2: 'COOKIE_KEY_2'
+    },
+    matterbridge: {
+        bin: 'MATTERBRIDGE_BINARY',
+        config: 'MATTERBRIDGE_CONFIG_DIR'
     }
 }
