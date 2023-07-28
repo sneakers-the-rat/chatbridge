@@ -27,6 +27,10 @@ export class Bridge extends Model {
     @Column({nullable:true})
     team_name: string;
 
+    // Used to fetch the bridge data from the client while installing
+    @Column()
+    state_token: string;
+
     @Column({
         unique: true
     })

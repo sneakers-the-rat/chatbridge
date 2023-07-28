@@ -10,7 +10,8 @@ export default {
     slackConfig: {
         client_id: 'SLACK_CLIENT_ID',
         client_secret: 'SLACK_CLIENT_SECRET',
-        signing_secret: 'SLACK_SIGNING_SECRET'
+        signing_secret: 'SLACK_SIGNING_SECRET',
+        state_secret: 'SLACK_STATE_SECRET'
     },
     admin_token: 'ADMIN_TOKEN',
     cookies:{

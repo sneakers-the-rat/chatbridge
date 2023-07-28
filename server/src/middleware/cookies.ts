@@ -2,6 +2,11 @@ import cookieSession from 'cookie-session';
 import config from 'config';
 import {Request, Response, NextFunction} from "express";
 import { tokenHasher, hashed_token } from "../auth";
+import {AppDataSource} from "../db/data-source";
+import {Bridge} from "../entities/bridge.entity";
+
+const bridgeRepository = AppDataSource.getRepository(Bridge)
+
 
 const cookieConfig = config.get<{
     'key1': string,
@@ -33,3 +38,21 @@ export const requireAdmin = (req: Request, res: Response, next: NextFunction) =>
         }
     }
 };
+
+export const requireStateToken = async(req: Request, res: Response, next: NextFunction) => {
+    if (req.session.state_token) {
+        let bridge = await bridgeRepository.findOneBy({state_token: req.session.state_token})
+        if (!bridge){
+            return res.status(404).json({
+                status: 'failure',
+                message: 'No matching bridge found'
+            })
+        }
+        next()
+    } else {
+        return res.status(403).json({
+            status: 'failure',
+            message: 'No state token found'
+        })
+    }
+}
