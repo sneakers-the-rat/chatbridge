@@ -4,8 +4,10 @@ import {NextFunction, Request, Response} from 'express';
 import {AppDataSource} from "../db/data-source";
 import {Bridge} from "../entities/bridge.entity";
 import {Group} from "../entities/group.entity";
+import {JoinSlackChannelInput} from "../schemas/slack.schema";
 import { randomUUID } from "crypto";
 import {log} from "util";
+import {Join} from "typeorm";
 
 const scopes = ['bot', 'channels:write', 'chat:write:bot', 'chat:write:user', 'users.profile:read'];
 const bridgeRepository = AppDataSource.getRepository(Bridge)
@@ -136,7 +138,7 @@ export const getChannelsHandler = async(
             }
         }).then(result => result.json())
             .then((result) => {
-                console.log('channels',res)
+                console.log('channels',result)
                 let channels = result.channels.map(
                     (chan: { name: string; }) => {
                         return chan.name
@@ -156,4 +158,63 @@ export const getChannelsHandler = async(
         })
     }
 
+}
+
+export const joinChannelsHandler = async(
+    req: Request<{}, {}, JoinSlackChannelInput>,
+    res: Response
+) => {
+    let bridge = await bridgeRepository.findOneBy({state_token: req.session.state_token})
+    console.log('bridge data', bridge)
+
+    try {
+        // Get channel ID from channel name
+        let channels_res = await fetch('https://slack.com/api/conversations.list', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${bridge.Token}`
+            }
+        })
+        let channels = <{ channels: { name: string, id: string }[] }>channels_res.json()
+        let channel_id = channels.channels.filter(
+            (chan) => {
+                return (chan.name == req.body.channel)
+            }
+        ).map(chan => chan.id)[0]
+        console.log('channel id', channel_id)
+
+        // Join channel from ID
+        fetch('https://slack.com/api/conversations.join', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${bridge.Token}`
+            },
+            body: JSON.stringify({
+                channel: channel_id
+            })
+        }).then(res => res.json())
+            .then((res) => {
+                if (res.ok) {
+                    res.status(200).json({
+                        status: 'success',
+                        data: {
+                            channels
+                        }
+                    })
+                } else {
+                    res.status(502).json({
+                        status: 'failure',
+                        message: 'Couldnt join channel'
+                    })
+                }
+            })
+
+    } catch {
+        return res.status(502).json({
+            status: 'failure',
+            message: "Couldn't join channel!"
+        })
+    }
 }

@@ -3,7 +3,8 @@ import express from 'express';
 import {
     SlackInstallLinkHandler,
     SlackCallbackHandler,
-    getChannelsHandler
+    getChannelsHandler,
+    joinChannelsHandler
 } from '../controllers/slack.controller'
 
 import {
@@ -20,5 +21,7 @@ router.route('/oauth_redirect')
 
 router.route('/channels')
     .get(requireStateToken, getChannelsHandler)
+    .post(requireStateToken, joinChannelsHandler)
+
 
 export default router
