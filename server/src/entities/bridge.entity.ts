@@ -31,10 +31,21 @@ export class Bridge extends Model {
     @Column()
     state_token: string;
 
+    // Bot token for slack
     @Column({
         unique: true
     })
     Token: string;
+
+    @Column({
+        nullable: true
+    })
+    user_token: string;
+
+    @Column({
+        nullable:true
+    })
+    bot_id: string;
 
     @Column({
         default: true

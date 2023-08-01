@@ -57,7 +57,7 @@ export const getGroupConfig = async (group_name: string, group:object): Promise<
     where: {name: group_name},
     relations: {channels: true}
   })
-
+  console.log('config group', group)
   // Construct config in the gateway style for programmatic use
   let gateway = <Gateway>{
     name: group.name,
@@ -79,6 +79,7 @@ export const getGroupConfig = async (group_name: string, group:object): Promise<
       }
     })
   }
+  console.log('config group transformed', gateway)
   return gateway
 }
 
@@ -153,6 +154,7 @@ export const GatewayToTOML = (gateway: Gateway) => {
     protocols[bridge.protocol][bridge.name] = TOML.Section(bridgeEntry)
 
   })
+  console.log('gateway toml protocols', protocols)
 
   return {
     ...protocols,
@@ -171,6 +173,8 @@ export const writeTOML = (gateway_toml: object, out_file: string) => {
       newline: '\n'
     }
   )
+
+  console.log('toml string', toml_string)
 
   fs.writeFileSync(out_file, toml_string)
 

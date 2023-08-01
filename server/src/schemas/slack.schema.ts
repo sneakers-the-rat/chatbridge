@@ -2,8 +2,8 @@ import { object, string, TypeOf } from 'zod';
 
 export const joinSlackChannelSchema = object({
     body: object({
-        channel: string({
-            required_error: "Channel name required!"
+        channel_id: string({
+            required_error: "Channel ID required!"
         }),
     })
 })

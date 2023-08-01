@@ -17,7 +17,7 @@ export class Group extends Model {
     @Column()
     invite_token: string;
 
-    @OneToMany(() => Channel, (channel) => channel.bridge)
+    @OneToMany(() => Channel, (channel) => channel.group)
     channels: Channel[]
 
 }

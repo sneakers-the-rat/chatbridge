@@ -4,7 +4,8 @@ import {
     SlackInstallLinkHandler,
     SlackCallbackHandler,
     getChannelsHandler,
-    joinChannelsHandler
+    joinChannelsHandler,
+    getBotInfo
 } from '../controllers/slack.controller'
 
 import {
@@ -22,6 +23,9 @@ router.route('/oauth_redirect')
 router.route('/channels')
     .get(requireStateToken, getChannelsHandler)
     .post(requireStateToken, joinChannelsHandler)
+
+router.route('/info')
+    .get(requireStateToken, getBotInfo)
 
 
 export default router

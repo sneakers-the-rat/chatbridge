@@ -48,13 +48,6 @@ export const JoinPlatform = ({
         // pingForBridge()
     }
 
-    // const pingForBridge = () =>{
-    //     if (bridge === undefined){
-    //         console.log('bridge is', bridge)
-    //         getBridgeByStateToken(setBridge);
-    //         setTimeout(pingForBridge, 1000);
-    //     }
-    // }
 
     useEffect(() => {
         const pingForBridge = () => {
@@ -110,7 +103,7 @@ export const JoinPlatform = ({
                     >
                     <MenuItem value={'Slack'}>Slack</MenuItem>
                     
-            </Select>
+                </Select>
             </FormControl>
             {
                 installLink && platform == "Slack" ?

@@ -1,26 +1,58 @@
-import {Grid} from "@mui/material";
-import {TextField} from "@mui/material";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+
+import {setBridgeLabel} from "../../api/bridge";
+import {useState} from "react";
 
 
 export const JoinBridge = ({
-    bridge, setBridge
+    bridge, setBridge, setStepComplete, stepComplete
                            }) => {
-    const onSetLabel = (label) => {
-        setBridge({...bridge, Label:label})
+
+    const [errored, setErrored] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('')
+
+    const updateBridgeLabel = () => {
+        setBridgeLabel(bridge.Label, (res) => {
+            if (res.status === 'success') {
+                setErrored(false)
+                setStepComplete({...stepComplete, bridge:true})
+            } else {
+                setErrored(true)
+                setErrorMessage(res.message)
+            }
+        })
+    }
+
+    const onSetBridge = (evt) => {
+        setBridge({...bridge, Label:evt.target.value})
     }
 
 return (
-    <Grid container spacing={2} columns={2}>
-        <Grid item xs={1}>
-
-        </Grid>
-        <Grid item xs={1}>
+    <div className={"list-row"}>
+        {/*<FormControl sx={{width: "50%"}}>*/}
+        {/*    <InputLabel>Bridge Label</InputLabel>*/}
             <TextField
-                onChange={(event) => {onSetLabel(event.target.value)}}>
-
+                value={bridge ? bridge.Label : ''}
+                onChange={onSetBridge}
+                label={"Bridge Label"}
+                error={errored}
+                color={stepComplete.bridge ? 'success' : undefined}
+                helperText={errored ? errorMessage : "A short label shown before messages from this bridge"}
+            >
             </TextField>
-        </Grid>
-    </Grid>
+            <Button
+                variant={"outlined"}
+                onClick={updateBridgeLabel}
+                color={errored ? 'error': stepComplete.bridge ? 'success' : undefined}
+            >
+                {stepComplete.bridge ? 'Label Updated!' : 'Update Label!'}
+            </Button>
+    </div>
 )
 
 }

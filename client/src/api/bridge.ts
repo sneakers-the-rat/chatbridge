@@ -22,8 +22,9 @@ export const setBridgeLabel = (label:string, callback: CallableFunction) => {
         })
     }).then(res => res.json())
     .then((res) => {
-        if (res.status === "success") {
-            callback()
-        }
+        callback(res)
+        // if (res.status === "success") {
+        //     callback()
+        // }
     })
 }
