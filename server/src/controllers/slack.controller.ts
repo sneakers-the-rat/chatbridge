@@ -1,7 +1,7 @@
 import config from 'config';
 import {Request, Response} from 'express';
 import {AppDataSource} from "../db/data-source";
-import {Bridge} from "../entities/bridge.entity";
+import {Bridge, SlackBridge} from "../entities/bridge.entity";
 import {Group} from "../entities/group.entity";
 import {JoinSlackChannelInput} from "../schemas/slack.schema";
 import {randomUUID} from "crypto";
@@ -12,7 +12,7 @@ import { slackConfigType } from "../types/config";
 const { InstallProvider, LogLevel, FileInstallationStore } = require('@slack/oauth');
 
 const scopes = ['bot', 'channels:write', 'channels:write.invites', 'chat:write:bot', 'chat:write:user', 'users.profile:read'];
-const bridgeRepository = AppDataSource.getRepository(Bridge)
+const slackBridgeRepository = AppDataSource.getRepository(SlackBridge)
 const groupRepository = AppDataSource.getRepository(Group)
 
 const SLACK_COOKIE_NAME = "slack-oauth-state";
@@ -77,10 +77,10 @@ export const SlackCallbackHandler = async(
           }
 
           // check if we have an entity
-          let bridge = await bridgeRepository.findOneBy({Token: installation.bot.token})
+          let bridge = await slackBridgeRepository.findOneBy({Token: installation.bot.token})
           if (!bridge){
-              bridge = await bridgeRepository.create(bridge_data);
-              await bridgeRepository.save(bridge);
+              bridge = await slackBridgeRepository.create(bridge_data);
+              await slackBridgeRepository.save(bridge);
               logger.debug('created bridge')
           } else {
 
@@ -88,7 +88,7 @@ export const SlackCallbackHandler = async(
               // Don't overwrite existing label
               bridge_data.Label = bridge.Label
               bridge_data = {...bridge, ...bridge_data}
-              let newbridge = await bridgeRepository.save(bridge_data)
+              let newbridge = await slackBridgeRepository.save(bridge_data)
           }
           res.send('<html><body><h1>Success! Return to the chatbridge login window.</h1><h3>This tab will close in 3 seconds...</h3><script>window.setTimeout(window.close, 3000)</script></body>')
 
@@ -107,7 +107,7 @@ export const getChannelsHandler = async(
     req: Request,
     res: Response
 ) => {
-    let bridge = await bridgeRepository.findOneBy({state_token: req.session.state_token})
+    let bridge = await slackBridgeRepository.findOneBy({state_token: req.session.state_token})
 
     try {
         fetch('https://slack.com/api/conversations.list', {
@@ -150,7 +150,7 @@ export const joinChannelsHandler = async(
     res: Response
 ) => {
 
-    let bridge = await bridgeRepository.findOneBy({state_token: req.session.state_token})
+    let bridge = await slackBridgeRepository.findOneBy({state_token: req.session.state_token})
 
     fetch('https://slack.com/api/conversations.invite', {
             method: "POST",
@@ -184,7 +184,7 @@ export const getBotInfo = async(
     req: Request,
     res: Response
 ) => {
-    let bridge = await bridgeRepository.findOneBy({state_token: req.session.state_token})
+    let bridge = await slackBridgeRepository.findOneBy({state_token: req.session.state_token})
 
     try {
         fetch('https://slack.com/api/auth.test', {

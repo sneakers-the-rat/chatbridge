@@ -13,6 +13,7 @@ import slackRoutes from "./routes/slack.routes";
 import authRoutes from "./routes/auth.routes";
 import bridgeRoutes from './routes/bridge.routes';
 import channelRoutes from './routes/channel.routes';
+import discordRoutes from "./routes/discord.routes";
 
 import logger from "./logging";
 
@@ -39,6 +40,7 @@ AppDataSource.initialize()
     app.use('/slack', slackRoutes);
     app.use('/bridge', bridgeRoutes);
     app.use('/channel', channelRoutes);
+    app.use('/discord', discordRoutes);
 
     app.all('*', (req: Request, res: Response, next: NextFunction) => {
       next(new AppError(404, `Route ${req.originalUrl} not found`));

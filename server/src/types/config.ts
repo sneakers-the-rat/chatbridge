@@ -4,3 +4,8 @@ export interface slackConfigType {
   signing_secret: string,
   state_secret: string
 }
+
+export interface discordConfigType {
+  token: string;
+  client_id: string;
+}

@@ -13,6 +13,10 @@ export default {
         signing_secret: 'SLACK_SIGNING_SECRET',
         state_secret: 'SLACK_STATE_SECRET'
     },
+    discordConfig: {
+        token: 'DISCORD_TOKEN',
+        client_id: "DISCORD_CLIENT_ID"
+    },
     admin_token: 'ADMIN_TOKEN',
     cookies:{
         key1: 'COOKIE_KEY_1',

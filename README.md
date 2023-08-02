@@ -20,11 +20,19 @@ Very unfinished!! Mostly a programming exercise for me for now to practice fulls
 (the ones that can use the website to join)
 
 - [Slack](#Slack)
+- [Discord](#Discord)
 
 ### Slack
 
-https://github.com/slackapi/node-slack-sdk
+- Set up Slack App with old style bot according to matterbridge instructions: https://github.com/42wim/matterbridge/wiki/Slack-bot-setup
+- Configure slack app to use the callback API url: `<yourdomain.etc.>/api/slack/oauth_redirect`
+- Set your `.env` variables!
 
+### Discord
+
+- Set up Discord App according to matterbridge instructions: https://github.com/42wim/matterbridge/wiki/Discord-bot-setup
+- Additionally enable "[Requires OAUTH2 Code Grant](https://discord.com/developers/docs/topics/oauth2#advanced-bot-authorization)" in your bot's authorization flow settings
+- Set the redirect URL to `<yourdomain.etc>/api/discord/oauth_redirect`
 
 ## Deployment
 
