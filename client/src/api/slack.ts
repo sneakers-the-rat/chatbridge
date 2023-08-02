@@ -3,7 +3,7 @@ export const getSlackInstallURL = (callback: CallableFunction) => {
         .then(res => res.json())
         .then(res => {
             console.log('Got slack url', res);
-            callback(res.data.url, res.data.state_token)
+            callback(res.data.url)
         })
 
 }

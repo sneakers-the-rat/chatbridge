@@ -1,9 +1,6 @@
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
 
 import {setBridgeLabel} from "../../api/bridge";
 import {useState} from "react";

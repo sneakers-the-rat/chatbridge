@@ -1,14 +1,15 @@
 import config from 'config';
-const { InstallProvider, LogLevel, FileInstallationStore } = require('@slack/oauth');
-import {NextFunction, Request, Response} from 'express';
+import {Request, Response} from 'express';
 import {AppDataSource} from "../db/data-source";
 import {Bridge} from "../entities/bridge.entity";
 import {Group} from "../entities/group.entity";
 import {JoinSlackChannelInput} from "../schemas/slack.schema";
-import { randomUUID } from "crypto";
-import {log} from "util";
-import {Join} from "typeorm";
+import {randomUUID} from "crypto";
 import logger from "../logging";
+import {authTest, slackChannel } from "../types/slack";
+import { slackConfigType } from "../types/config";
+
+const { InstallProvider, LogLevel, FileInstallationStore } = require('@slack/oauth');
 
 const scopes = ['bot', 'channels:write', 'channels:write.invites', 'chat:write:bot', 'chat:write:user', 'users.profile:read'];
 const bridgeRepository = AppDataSource.getRepository(Bridge)
@@ -16,61 +17,15 @@ const groupRepository = AppDataSource.getRepository(Group)
 
 const SLACK_COOKIE_NAME = "slack-oauth-state";
 
-const slackConfig = config.get<{
-    client_id: string,
-    client_secret: string,
-    signing_secret: string,
-    state_secret: string
-}>('slackConfig');
-
-export interface slackChannel {
-    id: string;
-    name: string;
-    is_channel: boolean;
-    is_group: boolean;
-    is_im: boolean;
-    is_mpim: boolean;
-    is_private: boolean;
-    created: number;
-    is_archived: boolean;
-    is_general: boolean;
-    unlinked: number;
-    name_normalized: string;
-    is_shared: boolean;
-    is_org_shared: boolean;
-    is_pending_ext_shared: boolean;
-    pending_shared: [];
-    context_team_id: string;
-    updated: number;
-    creator: string;
-    is_ext_shared: boolean;
-    shared_team_ids: string[];
-    is_member: boolean;
-    num_members: number;
-}
-
-export interface authTest {
-    ok: boolean;
-    url: string;
-    team: string;
-    user: string;
-    team_id: string;
-    user_id: string;
-    bot_id: string;
-    is_enterprise_install: boolean;
-}
+const slackConfig = config.get<slackConfigType>('slackConfig');
 
 const installer = new InstallProvider({
     clientId: slackConfig.client_id,
     clientSecret: slackConfig.client_secret,
     authVersion: 'v1',
     scopes,
-    // stateSecret: slackConfig.state_secret,
     stateVerification: false,
-    // installationStore: new FileInstallationStore(),
     logLevel: LogLevel.DEBUG,
-    // stateCookieName: SLACK_COOKIE_NAME
-
 })
 
 
@@ -94,8 +49,7 @@ export const SlackInstallLinkHandler = async(
     res.status(200).json({
         status: 'success',
         data: {
-            url,
-            state_token
+            url
         }
     })
 

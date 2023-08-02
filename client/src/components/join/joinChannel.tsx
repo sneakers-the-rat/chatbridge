@@ -5,16 +5,15 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import {stepCompleteType} from "./joinForm";
 
-import {joinSlackChannel} from "../../api/slack";
-import {useState} from "react";
+import {getSlackChannels, joinSlackChannel} from "../../api/slack";
+import {useEffect, useState} from "react";
+import {channelsType} from "../../types/channel";
+import {bridgeType} from "../../types/bridge";
 
 
 export interface JoinChannelProps {
-    channels: Array<{
-        name: string;
-        id: string;
-        is_member: boolean;
-    }>;
+    platform: string;
+    bridge: bridgeType;
     selectedChannel: string;
     setSelectedChannel: CallableFunction;
     setStepComplete: CallableFunction;
@@ -22,15 +21,25 @@ export interface JoinChannelProps {
 }
 
 const JoinChannel = ({
-    channels,
+    platform,
+    bridge,
     selectedChannel,
     setSelectedChannel,
     setStepComplete,
     stepComplete
 }: JoinChannelProps) => {
-    console.log('joinchannel channels', channels)
     const [errored, setErrored] = useState(false);
+    const [channels, setChannels] = useState<channelsType[]>();
 
+
+    useEffect(() => {
+        if (bridge){
+            switch(platform){
+                case "Slack":
+                    getSlackChannels(setChannels)
+            }
+        }
+    }, [platform, bridge])
 
     const onJoinChannel = (response) => {
         if (response.status === 'success'){
@@ -47,9 +56,13 @@ const JoinChannel = ({
     }
 
     const onJoinButtonClicked = () => {
-        let channel_id = channels.filter(chan => chan.name === selectedChannel)
-            .map(chan => chan.id)[0]
-        joinSlackChannel(channel_id, onJoinChannel)
+        switch(platform){
+            case "Slack":
+                let channel_id = channels.filter(chan => chan.name === selectedChannel)
+                  .map(chan => chan.id)[0]
+                joinSlackChannel(channel_id, onJoinChannel)
+        }
+
     }
 
     return (

@@ -1,29 +1,16 @@
-import Typography from "@mui/material/Typography";
-import Accordion from '@mui/material/Accordion';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import AccordionSummary from '@mui/material/AccordionSummary';
-
 
 import {Group} from "../../types/group";
 import {JoinStep} from './joinStep';
-import {JoinPlatform} from "./joinPlatform";
+import {JoinLogin} from "./joinLogin";
 import {useState, useEffect} from "react";
-import Grid from '@mui/material/Grid';
-import TextField from "@mui/material/TextField";
 import Button from '@mui/material/Button';
-import {setBridgeLabel} from "../../api/bridge";
-import {getSlackChannels} from "../../api/slack";
 import {createChannel} from "../../api/channel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select"
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import {JoinBridge} from "./joinBridge";
 import JoinChannel from "./joinChannel";
+import {bridgeType} from "../../types/bridge";
 
 export interface JoinFormProps {
     group?: Group
-    invite_token: string
 }
 
 export interface stepCompleteType {
@@ -32,31 +19,30 @@ export interface stepCompleteType {
     channel: boolean;
 }
 
-export const JoinForm = ({group, invite_token}: JoinFormProps) => {
-    const [bridgeCreated, setBridgeCreated] = useState(false);
-    const [bridgeErrorMessage, setBridgeErrorMessage] = useState('');
+export interface stepErrorType {
+    login: string;
+    bridge: string;
+    channel: string;
+}
+
+export const JoinForm = ({group}: JoinFormProps) => {
+    // The platform selected to log in to
     const [platform, setPlatform] = useState<string>();
-    const [channels, setChannels] = useState<Array<{
-        name: string;
-        id: string;
-        is_member: boolean;
-    }>
-    >();
+    const [bridge, setBridge] = useState<bridgeType>();
     const [selectedChannel, setSelectedChannel] = useState<string>('');
-    const [bridge, setBridge] = useState<{
-        Label: string;
-        Protocol: string;
-        team_name: string;
-        id: string;
-    }>();
+
     const [stepComplete, setStepComplete] = useState<stepCompleteType>({
         login: false,
         bridge: false,
         channel: false
     });
 
+    const [bridgeCreated, setBridgeCreated] = useState(false);
+    const [bridgeErrorMessage, setBridgeErrorMessage] = useState('');
+
+
     const createBridgedChannel = () => {
-        createChannel(selectedChannel, bridge.id, invite_token, onBridgedChannelCreated)
+        createChannel(selectedChannel, bridge.id, group.invite_token, onBridgedChannelCreated)
     }
 
     const onBridgedChannelCreated = (result) => {
@@ -69,15 +55,6 @@ export const JoinForm = ({group, invite_token}: JoinFormProps) => {
         }
     }
 
-    useEffect(() => {
-        if (bridge !== undefined){
-            setStepComplete({...stepComplete, login:true})
-        }
-        if (bridge !== undefined && channels === undefined){
-            getSlackChannels(setChannels)
-        }
-    }, [bridge])
-
     return (
         <>
             <header className={'section-header'}>
@@ -89,10 +66,13 @@ export const JoinForm = ({group, invite_token}: JoinFormProps) => {
             id={'login'}
             completed={stepComplete.login}
         >
-            <JoinPlatform
-                platformSetter = {setPlatform}
-                bridgeSetter = {setBridge}
-                completeSetter= {setStepComplete}
+            <JoinLogin
+                platform={platform}
+                setPlatform = {setPlatform}
+                bridge={bridge}
+                setBridge = {setBridge}
+                stepComplete = {stepComplete}
+                setStepComplete = {setStepComplete}
             />
         </JoinStep>
         <JoinStep
@@ -117,7 +97,8 @@ export const JoinForm = ({group, invite_token}: JoinFormProps) => {
             completed={stepComplete.channel}
         >
             <JoinChannel
-                channels={channels}
+                platform={platform}
+                bridge={bridge}
                 selectedChannel={selectedChannel}
                 setSelectedChannel={setSelectedChannel}
                 setStepComplete={setStepComplete}
