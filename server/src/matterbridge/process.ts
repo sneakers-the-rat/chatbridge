@@ -58,30 +58,35 @@ class MatterbridgeManager {
     let group_name_slug = slugify(group_name)
     let group_filename = `${this.matterbridge_config_dir}/matterbridge-${group_name_slug}.toml`
     await writeGroupConfig(group_name, group_filename);
-    if (!this.process_list.includes(group_name_slug)){
-      logger.info('Spawning new matterbridge process: %s', group_name_slug)
-      await pm2.start(
-        {
-          name: group_name_slug,
-          script: this.matterbridge_bin,
-          args: `-conf ${group_filename}`,
-          interpreter: 'none'
-        },
-        (err:any, apps:object) => {
-          if (err) {
-            logger.error('error starting matterbridge process', err, apps)
-          }
-        }
-      )
-      this.process_list.push(group_name_slug)
-    } else {
-      logger.info('Restarting existing matterbridge process: %s', group_name_slug)
-      await pm2.restart(group_name_slug, (err:any, proc:any) => {
-        if (err) {
-          logger.error('error restarting matterbridge process', err)
-        }}
-      )
-    }
+
+    pm2.connect(async(err:any) => {
+      if (!this.process_list.includes(group_name_slug)) {
+        logger.info('Spawning new matterbridge process: %s', group_name_slug)
+        await pm2.start(
+            {
+              name: group_name_slug,
+              script: this.matterbridge_bin,
+              args: `-conf ${group_filename}`,
+              interpreter: 'none'
+            },
+            (err: any, apps: object) => {
+              if (err) {
+                logger.error('error starting matterbridge process', err, apps)
+              }
+            }
+        )
+        this.process_list.push(group_name_slug)
+      } else {
+        logger.info('Restarting existing matterbridge process: %s', group_name_slug)
+        await pm2.restart(group_name_slug, (err: any, proc: any) => {
+              if (err) {
+                logger.error('error restarting matterbridge process', err)
+              }
+            }
+        )
+      }
+      // await pm2.disconnect()
+    })
   }
 
   async refreshConfig(group_name: string) {
@@ -111,7 +116,7 @@ class MatterbridgeManager {
             status: proc.pm2_env.status,
             monit: proc.monit,
             pm2_env: {
-              created_at: proc.pm2_env.proc.pm2_env.created_at,
+              created_at: proc.pm2_env.created_at,
               exec_interpreter: proc.pm2_env.exec_interpreter,
               exec_mode: proc.pm2_env.exec_mode,
               instances: proc.pm2_env.instances,

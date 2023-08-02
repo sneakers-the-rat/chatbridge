@@ -9,9 +9,11 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import {SlackLogin} from "../platforms/slackLogin";
+import {DiscordLogin} from "../platforms/discordLogin";
 
 enum PLATFORMS {
-    Slack = 'Slack'
+    Slack = 'Slack',
+    Discord = 'Discord'
 }
 
 export const JoinLogin = ({
@@ -22,26 +24,12 @@ export const JoinLogin = ({
     stepComplete,
     setStepComplete
  }) => {
-    const [loginComponent, setLoginComponent] = useState(<></>);
 
 
     const handleSelect = (event) => {
         setBridge(undefined);
         setPlatform(event.target.value);
     }
-
-    useEffect(() => {
-      switch(platform){
-        case "Slack":
-          setLoginComponent(<SlackLogin
-            bridge={bridge}
-            setBridge={setBridge}
-          />)
-        default:
-          setLoginComponent(<></>)
-
-      }
-    }, [platform])
 
     useEffect(() => {
       if (bridge !== undefined) {
@@ -60,11 +48,20 @@ export const JoinLogin = ({
                     label={"Select Platform"}
                     >
                     <MenuItem value={'Slack'}>Slack</MenuItem>
+                    <MenuItem value={'Discord'}>Discord</MenuItem>
 
                 </Select>
             </FormControl>
             {
-                platform ? loginComponent : <div style={{width: "50%"}}></div>
+                platform === "Slack" ? <SlackLogin
+                    bridge={bridge}
+                    setBridge={setBridge}
+                />
+                : platform === "Discord" ?   <DiscordLogin
+                            bridge={bridge}
+                            setBridge={setBridge}
+                        />
+                : <div style={{width: "50%"}}></div>
             }
 
         </div>

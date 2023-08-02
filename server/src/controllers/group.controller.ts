@@ -86,6 +86,26 @@ export const getGroupWithInviteHandler = async(
 
 }
 
+export const deleteGroupHandler = async(
+    req: Request,
+    res:Response,
+) => {
+    let group = await groupRepository.findOneBy({id: req.body.id})
+    if (group){
+        await groupRepository.remove(group)
+        return res.status(200).json({
+            status: 'success',
+            message: 'Group successfully deleted!'
+        })
+    } else {
+        return res.status(404).json({
+            status: 'failed',
+            message: 'no group with matching ID found'
+        })
+    }
+
+}
+
 export const getGroupsHandler = async(
     req: Request,
     res: Response

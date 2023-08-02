@@ -20,6 +20,13 @@ export const DiscordInstallLinkHandler = async(
 
   const url = `https://discordapp.com/oauth2/authorize?&client_id=${discordConfig.client_id}&scope=bot&permissions=536870912&state=${state_token}`
 
+    res.status(200).json({
+      status: 'success',
+      data: {
+        url
+      }
+    })
+
 
 }
 

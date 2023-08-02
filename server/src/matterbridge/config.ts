@@ -175,7 +175,7 @@ export const writeTOML = (gateway_toml: object, out_file: string) => {
     }
   )
 
-  logger.debug('toml string', toml_string)
+  // logger.debug('toml string', toml_string)
 
   fs.writeFileSync(out_file, toml_string)
 

@@ -6,7 +6,7 @@ import {getBridgeByStateToken} from "../../api/bridge";
 export const SlackLogin = ({
   bridge,
   setBridge
-                           }) => {
+}) => {
   const [installLink, setInstallLink] = useState();
   const [installStarted, setInstallStarted] = useState(false)
   const pingTimeout = useRef(null);

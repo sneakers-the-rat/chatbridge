@@ -1,20 +1,28 @@
 const fs = require('fs')
 const path = require('path')
 import config from "config";
-import { Logger, format, createLogger, transports } from 'winston';
+// import { Logger, format, createLogger, transports } from 'winston';
+const winston = require('winston');
+let Logger = winston.Logger
+let format = winston.format
+let createLogger = winston.createLogger
+let transports = winston.transports
 
 const logDir = config.get<string>('logDir')
 
 const makeLogdir = () => {
-  fs.mkdir(logDir, (err:Error|undefined) => {
-    if (err) throw err;
-  })
+  if (!fs.existsSync(logDir)){
+    fs.mkdir(logDir, (err:Error|undefined) => {
+      if (err) throw err;
+    })
+  }
 }
 
-const makeLogger = (): Logger => {
+const makeLogger = (): typeof Logger => {
   makeLogdir()
 
   const logger = createLogger({
+    levels: winston.config.syslog.levels,
     level: process.env.NODE_ENV === 'development' ? 'debug' : 'info',
     format: format.combine(
       format.timestamp({
@@ -26,11 +34,11 @@ const makeLogger = (): Logger => {
     ),
     transports: [
       new transports.File({
-        filename: path.join([logDir, 'chatbridge.error.log']),
+        filename: path.join(logDir, 'chatbridge.error.log'),
         level: 'error'
       }),
       new transports.File({
-        filename: path.join([logDir, 'chatbridge.debug.log']),
+        filename: path.join(logDir, 'chatbridge.debug.log'),
         level: 'debug'
       }),
       ...(process.env.NODE_ENV === 'development' ? [

@@ -2,17 +2,30 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import IconButton from "@mui/material/IconButton"
+
+import {deleteGroup} from "../../api/groups";
 
 export interface GroupRowProps {
     name: string;
     id: string;
     invite_token: string;
     created_at: string;
+    fetchGroups: CallableFunction;
 }
 
 export default function GroupRow(
-    {name, id, invite_token, created_at}: GroupRowProps
+    {name, id, invite_token, created_at, fetchGroups}: GroupRowProps
 ){
+    const handleDeleteGroup = () => {
+        deleteGroup(id, deleteGroupCallback)
+    }
+
+    const deleteGroupCallback = () => {
+        fetchGroups()
+    }
+
     return(
         <TableRow
             key={id}
@@ -23,6 +36,13 @@ export default function GroupRow(
             </TableCell>
             <TableCell align="right">{created_at}</TableCell>
             <TableCell align="right">{invite_token}</TableCell>
+            <TableCell align="right">
+                <IconButton
+                    onClick={handleDeleteGroup}
+                >
+                    <DeleteForeverIcon/>
+                </IconButton>
+            </TableCell>
         </TableRow>
     )
 

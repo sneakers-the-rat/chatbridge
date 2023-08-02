@@ -9,10 +9,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import Typography from "@mui/material/Typography";
 
+
 import GroupRow from "./groupRow";
 
 export default function GroupPanel({
-    groups
+    groups,
+    fetchGroups
 }){
 
     return(
@@ -24,6 +26,7 @@ export default function GroupPanel({
                             <TableCell>Group</TableCell>
                             <TableCell align="right">Created At</TableCell>
                             <TableCell align="right">Invite Token</TableCell>
+                            <TableCell align="right">Delete</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -34,6 +37,7 @@ export default function GroupPanel({
                                 id={group.id}
                                 invite_token={group.invite_token}
                                 created_at={group.created_at}
+                                fetchGroups={fetchGroups}
                             ></GroupRow>
                             )) : undefined}
                     </TableBody>

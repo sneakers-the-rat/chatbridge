@@ -21,7 +21,6 @@ export const checkAdminToken = async(
         });
     } else {
         req.session.logged_in = false;
-
         logger.warning("Login with admin token failed")
         return res.status(403).json({
             status:'fail',

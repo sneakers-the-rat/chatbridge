@@ -14,6 +14,7 @@ Very unfinished!! Mostly a programming exercise for me for now to practice fulls
 - [ ] Sanitize user inputs
 - [ ] Check status of matterbridge processes
 - [ ] Complete slack login workflow
+- [ ] Kill group processes & delete config when group is deleted
 
 ## Supported Clients 
 

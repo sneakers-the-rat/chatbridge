@@ -135,6 +135,7 @@ export default function ManagePanel(){
                 loggedIn ?
                     <GroupPanel
                         groups={groups}
+                        fetchGroups={fetchGroups}
                     />
                     :
                     null
