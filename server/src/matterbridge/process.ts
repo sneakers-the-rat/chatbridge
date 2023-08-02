@@ -12,6 +12,7 @@ import config from "config";
 import { writeGroupConfig } from "./config";
 import {Group} from "../entities/group.entity";
 import slugify from "slugify";
+import logger from "../logging";
 const groupRepository = AppDataSource.getRepository(Group)
 
 
@@ -57,9 +58,8 @@ class MatterbridgeManager {
     let group_name_slug = slugify(group_name)
     let group_filename = `${this.matterbridge_config_dir}/matterbridge-${group_name_slug}.toml`
     await writeGroupConfig(group_name, group_filename);
-    console.log('matterbridge config written')
     if (!this.process_list.includes(group_name_slug)){
-      console.log('matterbridge new process')
+      logger.info('Spawning new matterbridge process: %s', group_name_slug)
       await pm2.start(
         {
           name: group_name_slug,
@@ -68,20 +68,25 @@ class MatterbridgeManager {
           interpreter: 'none'
         },
         (err:any, apps:object) => {
-          console.log('error starting matterbridge process', err, apps)
+          if (err) {
+            logger.error('error starting matterbridge process', err, apps)
+          }
         }
       )
       this.process_list.push(group_name_slug)
     } else {
-      console.log('matterbridge restarting!')
+      logger.info('Restarting existing matterbridge process: %s', group_name_slug)
       await pm2.restart(group_name_slug, (err:any, proc:any) => {
-        console.log('error restarting matterbridge process', err, apps)}
+        if (err) {
+          logger.error('error restarting matterbridge process', err)
+        }}
       )
     }
   }
 
   async refreshConfig(group_name: string) {
-    let group_filename = `${this.matterbridge_config_dir}/matterbridge-${group_name}.toml`
+    let group_name_slug = slugify(group_name)
+    let group_filename = `${this.matterbridge_config_dir}/matterbridge-${group_name_slug}.toml`
     await writeGroupConfig(group_name, group_filename);
   }
 
@@ -127,4 +132,19 @@ const manager = new MatterbridgeManager(
   matterbridge_config.bin,
   matterbridge_config.config
 )
+
+export const killMatterbridge = () => {
+  pm2.connect((err: Error|undefined) => {
+    if (err){
+      logger.error('error connecting to pm2', err)
+    }
+    pm2.killDaemon((err: Error|undefined) => {
+      if (err){
+        logger.error('error killing pm2 daemon', err)
+      }
+      pm2.disconnect()
+    })
+  })
+}
+
 export default manager

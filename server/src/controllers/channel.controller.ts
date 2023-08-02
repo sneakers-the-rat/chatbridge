@@ -17,6 +17,7 @@ const channelRepository = AppDataSource.getRepository(Channel)
 
 import MatterbridgeManager from '../matterbridge/process';
 
+import logger from "../logging";
 
 export const createChannelHandler = async(
     req: Request<{}, {}, CreateChannelInput>,
@@ -47,8 +48,6 @@ export const createChannelHandler = async(
             group: {id: group.id}
         })
 
-
-
         if (!channel) {
             // create new
             channel = new Channel()
@@ -58,12 +57,8 @@ export const createChannelHandler = async(
         channel.bridge = bridge
         channel.group = group
 
-        console.log('have channel', channel)
-        console.log('have group', group)
-        console.log('have bridge', bridge)
-
         channel = await channelRepository.save(channel)
-        
+
         await groupRepository
             .createQueryBuilder()
             .relation(Group, 'channels')
@@ -76,17 +71,18 @@ export const createChannelHandler = async(
             .of(bridge)
             .add(channel)
 
-        console.log('newchannel', channel)
-        console.log('saved group', group)
+        logger.debug('Created new channel: %s', channel)
 
         await MatterbridgeManager.spawnProcess(group.name)
+
+        logger.debug('Spawned process for %s', group.name)
 
         return res.status(200).json({
             status: 'success',
             data: channel
         })
     } catch (err) {
-        console.log('failed to create channe', err)
+        logger.error('failed to create channel', err)
         return res.status(502).json({
             status: 'failed',
             message: 'failed to create channel'

@@ -21,5 +21,6 @@ export default {
     matterbridge: {
         bin: 'MATTERBRIDGE_BINARY',
         config: 'MATTERBRIDGE_CONFIG_DIR'
-    }
+    },
+    logDir: 'LOG_DIR'
 }

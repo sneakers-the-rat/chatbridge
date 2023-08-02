@@ -7,32 +7,20 @@ import {randomBytes} from "crypto";
 
 import {AppDataSource} from "../db/data-source";
 
-import {hashed_token} from "../auth";
-
 const groupRepository = AppDataSource.getRepository(Group)
+
+import logger from "../logging";
 
 export const createGroupHandler = async(
     req: Request<{}, {}, CreateGroupInput>,
     res: Response
 ) => {
-    // console.log(req.body);
-    // const admin_token = config.get<string>('admin_token');
-    // if (req.body?.token !== admin_token && req.session.hashed_token !== hashed_token){
-    //     return res.status(403).json({
-    //         status: 'fail',
-    //         message: 'Not authorized to create group without correct admin token'
-    //     })
-    // }
 
-    // Make new invite token as a random UUID
-    // let invite_token = randomUUID();
-    //  doesn't need to be as long as that...
     let invite_token = randomBytes(8).toString('hex');
 
     let group = await groupRepository.create({...req.body, invite_token})
     let result = await groupRepository.save(group)
-    console.log("Group successfully created")
-    console.log(result)
+    logger.info("Group successfully created: %s", result)
     return res.send({"status": "success", "data": result})
 
 }
@@ -51,15 +39,15 @@ export const getGroupHandler = async(
         } else {
             group = await groupRepository.find()
         }
-        console.log(group);
         if (group.length === 0) {
+            logger.info("failed to get group with name %s", query)
             return res.status(404).json({
                 status: 'failed',
                 message: `No group with matching name exists. given name: ${query}`
             })
         }
 
-        console.log("Groups retrieved", group);
+        logger.info("Groups retrieved %s", group);
 
         return res.status(200).json({
             status: 'success',
@@ -69,6 +57,7 @@ export const getGroupHandler = async(
         })
 
     } catch (err: any) {
+        logger.debug('Error getting groups', err)
         next(err);
     }
 };

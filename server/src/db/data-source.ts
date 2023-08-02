@@ -10,7 +10,6 @@ const postgresConfig = config.get<{
     password: string;
     database: string;
 }>('postgresConfig');
-
 export const AppDataSource = new DataSource({
     ...postgresConfig,
     type: 'postgres',

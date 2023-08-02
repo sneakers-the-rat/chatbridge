@@ -1,8 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import {CheckAdminInput} from "../schemas/auth.schema";
 import { hashed_token, tokenHasher} from "../auth";
-
-
+import logger from "../logging";
 
 
 export const checkAdminToken = async(
@@ -15,7 +14,7 @@ export const checkAdminToken = async(
         req.session?.hashed_token === hashed_token
     ){
         req.session.hashed_token = hashed_token;
-        console.log("Logged in with admin token")
+        logger.info("Logged in with admin token")
         res.status(200).json({
             status: 'success',
             message: "Correct admin token!"
@@ -23,7 +22,7 @@ export const checkAdminToken = async(
     } else {
         req.session.logged_in = false;
 
-        console.log("Login with admin token failed")
+        logger.warning("Login with admin token failed")
         return res.status(403).json({
             status:'fail',
             message: "Incorrect admin token!"

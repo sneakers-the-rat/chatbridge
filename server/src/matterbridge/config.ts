@@ -8,6 +8,7 @@ import {AppDataSource} from "../db/data-source";
 import {Group} from "../entities/group.entity";
 const slugify = require('slugify');
 import * as TOML from '@ltd/j-toml';
+import logger from "../logging";
 const fs = require('fs');
 
 const groupRepository = AppDataSource.getRepository(Group)
@@ -57,7 +58,7 @@ export const getGroupConfig = async (group_name: string, group:object): Promise<
     where: {name: group_name},
     relations: {channels: true}
   })
-  console.log('config group', group)
+  logger.debug('config group', group)
   // Construct config in the gateway style for programmatic use
   let gateway = <Gateway>{
     name: group.name,
@@ -79,7 +80,7 @@ export const getGroupConfig = async (group_name: string, group:object): Promise<
       }
     })
   }
-  console.log('config group transformed', gateway)
+  logger.debug('config group transformed', gateway)
   return gateway
 }
 
@@ -154,7 +155,7 @@ export const GatewayToTOML = (gateway: Gateway) => {
     protocols[bridge.protocol][bridge.name] = TOML.Section(bridgeEntry)
 
   })
-  console.log('gateway toml protocols', protocols)
+  logger.debug('gateway toml protocols', protocols)
 
   return {
     ...protocols,
@@ -174,9 +175,11 @@ export const writeTOML = (gateway_toml: object, out_file: string) => {
     }
   )
 
-  console.log('toml string', toml_string)
+  logger.debug('toml string', toml_string)
 
   fs.writeFileSync(out_file, toml_string)
+
+  logger.info('Wrote group config to %s', out_file)
 
 }
 

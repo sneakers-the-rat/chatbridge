@@ -4,7 +4,7 @@ import config from 'config';
 import cors from 'cors';
 import { AppDataSource } from './db/data-source';
 import AppError from './errors/appError';
-
+import {killMatterbridge} from "./matterbridge/process";
 import MatterbridgeManager from "./matterbridge/process";
 
 import {cookieMiddleware} from "./middleware/cookies";
@@ -13,6 +13,9 @@ import slackRoutes from "./routes/slack.routes";
 import authRoutes from "./routes/auth.routes";
 import bridgeRoutes from './routes/bridge.routes';
 import channelRoutes from './routes/channel.routes';
+
+import logger from "./logging";
+
 
 
 
@@ -32,13 +35,7 @@ AppDataSource.initialize()
     })
 
     app.use('/groups', groupRoutes);
-    app.use('/auth', authRoutes)
-
-    // app.use('/slack', async (req:Request, res:Response) => {
-    //     console.log(req)
-    //     let code = req.query.code;
-    // });
-
+    app.use('/auth', authRoutes);
     app.use('/slack', slackRoutes);
     app.use('/bridge', bridgeRoutes);
     app.use('/channel', channelRoutes);
@@ -49,12 +46,21 @@ AppDataSource.initialize()
 
     const port = config.get<number>('port');
     app.listen(port);
+    logger.info(`Server started on port: ${port}`)
 
-    console.log(`Server started on port: ${port}`)
-
-    // await MatterbridgeManager.spawnAll();
-    // console.log('Spawned group processes:');
-    // let proclist = await MatterbridgeManager.processes;
-    // console.log(proclist);
+    await MatterbridgeManager.spawnAll();
+    let proclist = await MatterbridgeManager.processes;
+    logger.info('Spawned group processes: %s', proclist);
 
   })
+
+// Kill matterbridge processes on app exit.
+
+process.on('SIGTERM', () => {
+    logger.debug('killing matterbridge from SIGTERM')
+   killMatterbridge()
+})
+process.on('exit', () => {
+    logger.debug('killing matterbridge from exit event')
+    killMatterbridge()
+})
