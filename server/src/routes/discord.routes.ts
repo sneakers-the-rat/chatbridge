@@ -1,7 +1,7 @@
 import express from 'express';
 
 import {
-  DiscordInstallLinkHandler,
+  DiscordInstallLinkHandler, DiscordJoinChannelsHandler, DiscordListChannelsHandler,
   DiscordOAuthHandler
 } from "../controllers/discord.controller";
 
@@ -15,6 +15,10 @@ router.route('/install')
 
 router.route('/oauth_redirect')
   .get(DiscordOAuthHandler)
+
+router.route('/channels')
+    .get(requireStateToken, DiscordListChannelsHandler)
+    .post(requireStateToken, DiscordJoinChannelsHandler)
 
 
 export default router

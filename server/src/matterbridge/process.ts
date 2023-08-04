@@ -9,7 +9,7 @@ import {AppDataSource} from "../db/data-source";
 const pm2 = require('pm2');
 import config from "config";
 
-import { writeGroupConfig } from "./config";
+import {GatewayToTOML, getGroupConfig, writeGroupConfig, writeTOML} from "./config";
 import {Group} from "../entities/group.entity";
 import slugify from "slugify";
 import logger from "../logging";
@@ -57,6 +57,17 @@ class MatterbridgeManager {
   async spawnProcess(group_name: string) {
     let group_name_slug = slugify(group_name)
     let group_filename = `${this.matterbridge_config_dir}/matterbridge-${group_name_slug}.toml`
+    let group_config = await getGroupConfig(group_name)
+    if (group_config.inOuts.length === 0){
+      logger.info(`Not spawning group ${group_name} with no bridged channels`)
+      return
+    }
+    let res = writeTOML(GatewayToTOML(group_config), group_filename)
+    if (res === false){
+      logger.error('Not spawning, config could not be updated')
+      return
+    }
+
     await writeGroupConfig(group_name, group_filename);
 
     pm2.connect(async(err:any) => {

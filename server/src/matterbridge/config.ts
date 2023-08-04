@@ -9,10 +9,11 @@ import {Group} from "../entities/group.entity";
 const slugify = require('slugify');
 import * as TOML from '@ltd/j-toml';
 import logger from "../logging";
+import {Bridge} from "../entities/bridge.entity";
 const fs = require('fs');
 
 const groupRepository = AppDataSource.getRepository(Group)
-
+const bridgeRepository = AppDataSource.getRepository(Bridge)
 
 
 /*
@@ -27,7 +28,10 @@ type BridgeEntry = {
   Label: string;
   Token: string;
   PrefixMessagesWithNick: boolean;
-  RemoteNickFormat: string
+  RemoteNickFormat: string;
+  Server?: string;
+  AutoWebooks?: boolean;
+  PreserveThreading?: boolean;
 }
 
 /*
@@ -53,26 +57,56 @@ type Gateway = {
 }
 
 
-export const getGroupConfig = async (group_name: string, group:object): Promise<Gateway> => {
+export const getGroupConfig = async (group_name: string): Promise<Gateway> => {
   let group = await groupRepository.findOne({
     where: {name: group_name},
     relations: {channels: true}
   })
   logger.debug('config group', group)
+
   // Construct config in the gateway style for programmatic use
   let gateway = <Gateway>{
     name: group.name,
     enable: group.enable,
-    bridges: group.channels.map((channel) => {
-      return {
-        protocol: channel.bridge.Protocol,
-        name: slugify(channel.bridge.Label),
-        Label: channel.bridge.Label,
-        Token: channel.bridge.Token,
-        PrefixMessagesWithNick: channel.bridge.PrefixMessagesWithNick,
-        RemoteNickFormat: channel.bridge.RemoteNickFormat
+    bridges: await Promise.all(group.channels.map(async(channel) => {
+      // Need to load raw bridge to get all fields
+      let bridge = await bridgeRepository
+          .createQueryBuilder('bridge')
+          .where('bridge.id = :id', {id:channel.bridge.id})
+          .getRawOne()
+
+      // remove bridge_ prefix
+      Object.keys(bridge).forEach(key => {
+        bridge[key.replace('bridge_', '')] = bridge[key]
+        delete bridge[key]
+      })
+
+      switch (bridge.Protocol){
+        case 'slack':
+          return {
+            protocol: bridge.Protocol,
+            name: slugify(bridge.Label),
+            Label: bridge.Label,
+            Token: bridge.Token,
+            PrefixMessagesWithNick: bridge.PrefixMessagesWithNick,
+            RemoteNickFormat: bridge.RemoteNickFormat
+          }
+        case 'discord':
+          return {
+            protocol: bridge.Protocol,
+            name: slugify(bridge.Label),
+            Label: bridge.Label,
+            Token: bridge.Token,
+            Server: bridge.Server,
+            AutoWebhooks: bridge.AutoWebhooks,
+            PreserveThreading: bridge.PreserveThreading,
+            PrefixMessagesWithNick: bridge.PrefixMessagesWithNick,
+            RemoteNickFormat: bridge.RemoteNickFormat
+          }
+        default:
+          logger.error(`No matching protocol format found for protocol ${channel.bridge.Protocol}`)
       }
-    }),
+    })),
     inOuts: group.channels.map((channel) => {
       return {
         account: `${channel.bridge.Protocol}.${slugify(channel.bridge.Label)}`,
@@ -140,12 +174,21 @@ export const GatewayToTOML = (gateway: Gateway) => {
   // (ie. separate the different TOML table entries rather than representing them
   // inline. See https://www.npmjs.com/package/@ltd/j-toml
   gateway.bridges.forEach((bridge) => {
+    let bridgeEntry
+    if (bridge.protocol === "slack") {
+      bridgeEntry = {
+        Token: bridge.Token,
+        PrefixMessagesWithNick: bridge.PrefixMessagesWithNick,
+        RemoteNickFormat: bridge.RemoteNickFormat,
+        Label: bridge.Label
+      }
+    } else if (bridge.protocol === "discord"){
 
-    let bridgeEntry = {
-      Token: bridge.Token,
-      PrefixMessagesWithNick: bridge.PrefixMessagesWithNick,
-      RemoteNickFormat: bridge.RemoteNickFormat,
-      Label: bridge.Label
+      const {protocol, name, ...bridgeEntryInner} = bridge;
+      bridgeEntry = bridgeEntryInner
+    } else {
+      logger.error(`unknown protocol ${bridge.protocol} when generating toml config`)
+      return
     }
 
     if (!protocols.hasOwnProperty(bridge.protocol)){
@@ -155,9 +198,8 @@ export const GatewayToTOML = (gateway: Gateway) => {
     protocols[bridge.protocol][bridge.name] = TOML.Section(bridgeEntry)
 
   })
-  logger.debug('gateway toml protocols', protocols)
 
-  return {
+  let gateway_toml = {
     ...protocols,
     'gateway': [TOML.Section({
       name: gateway.name,
@@ -165,21 +207,36 @@ export const GatewayToTOML = (gateway: Gateway) => {
       inout: gateway.inOuts.map((inout) => TOML.Section(inout))
     })]
   }
+  logger.debug('gateway toml', gateway_toml)
+
+  return gateway_toml
 }
 
 export const writeTOML = (gateway_toml: object, out_file: string) => {
-  let toml_string = TOML.stringify(
-    gateway_toml,
-    {
-      newline: '\n'
-    }
-  )
+  let toml_string
 
-  // logger.debug('toml string', toml_string)
+  try {
+    toml_string = TOML.stringify(
+        gateway_toml,
+        {
+          newline: '\n'
+        }
+    )
+  } catch (err: any) {
+    logger.error(`Error creating toml from config:
+${gateway_toml}`, err)
+    return false
+  }
 
-  fs.writeFileSync(out_file, toml_string)
+  try {
+    fs.writeFileSync(out_file, toml_string)
+  } catch (err: any){
+    logger.error(`Error writing config to file ${out_file}`)
+    return false
+  }
 
   logger.info('Wrote group config to %s', out_file)
+  return true
 
 }
 

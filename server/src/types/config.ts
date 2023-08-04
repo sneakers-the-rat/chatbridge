@@ -8,4 +8,5 @@ export interface slackConfigType {
 export interface discordConfigType {
   token: string;
   client_id: string;
+  client_secret: string;
 }

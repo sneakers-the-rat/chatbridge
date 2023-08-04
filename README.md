@@ -10,10 +10,10 @@ Very unfinished!! Mostly a programming exercise for me for now to practice fulls
 
 ## TODO
 
-- [ ] Manage matterbridge processes
+- [x] Manage matterbridge processes
 - [ ] Sanitize user inputs
 - [ ] Check status of matterbridge processes
-- [ ] Complete slack login workflow
+- [x] Complete slack login workflow
 - [ ] Kill group processes & delete config when group is deleted
 
 ## Supported Clients 

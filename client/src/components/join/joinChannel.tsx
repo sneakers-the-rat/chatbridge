@@ -9,6 +9,7 @@ import {getSlackChannels, joinSlackChannel} from "../../api/slack";
 import {useEffect, useState} from "react";
 import {channelsType} from "../../types/channel";
 import {bridgeType} from "../../types/bridge";
+import {getDiscordChannels} from "../../api/discord";
 
 
 export interface JoinChannelProps {
@@ -37,6 +38,10 @@ const JoinChannel = ({
             switch(platform){
                 case "Slack":
                     getSlackChannels(setChannels)
+                    break
+                case "Discord":
+                    getDiscordChannels(setChannels)
+                    break
             }
         }
     }, [platform, bridge])
@@ -51,7 +56,13 @@ const JoinChannel = ({
     }
 
     const onChannelChanged = (evt:any) => {
-        setStepComplete({...stepComplete, channel:false})
+        if (platform === "Discord"){
+            // Discord bots are in all channels by default - selecting one here completes the step
+            setStepComplete({...stepComplete, channel:true})
+        } else {
+            // Otherwise, we need to do something to join the channel, so selecting means we have yet to join it.
+            setStepComplete({...stepComplete, channel: false})
+        }
         setSelectedChannel(evt.target.value)
     }
 
@@ -67,7 +78,7 @@ const JoinChannel = ({
 
     return (
         <div className={"list-row"}>
-            <FormControl sx={{width: "50%"}}>
+            <FormControl sx={{width: platform === "Slack" ? "50%" : "100%"}}>
                 <InputLabel>Select Channel</InputLabel>
                 <Select
                     // value={selectedChannel}
@@ -96,6 +107,7 @@ const JoinChannel = ({
 
                 </Select>
             </FormControl>
+            {platform === "Slack" ?
             <Button
                 variant={"outlined"}
                 onClick={onJoinButtonClicked}
@@ -104,6 +116,7 @@ const JoinChannel = ({
             >
                 {stepComplete.channel ? 'Channel Joined!' : 'Join Channel'}
             </Button>
+            : null }
         </div>
     )
 }

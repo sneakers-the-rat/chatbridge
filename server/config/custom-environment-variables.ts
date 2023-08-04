@@ -15,7 +15,9 @@ export default {
     },
     discordConfig: {
         token: 'DISCORD_TOKEN',
-        client_id: "DISCORD_CLIENT_ID"
+        client_id: "DISCORD_CLIENT_ID",
+        client_secret: 'DISCORD_CLIENT_SECRET'
+
     },
     admin_token: 'ADMIN_TOKEN',
     cookies:{
@@ -26,5 +28,6 @@ export default {
         bin: 'MATTERBRIDGE_BINARY',
         config: 'MATTERBRIDGE_CONFIG_DIR'
     },
-    logDir: 'LOG_DIR'
+    logDir: 'LOG_DIR',
+    baseURL: 'BASE_URL'
 }

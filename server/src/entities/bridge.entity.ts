@@ -24,12 +24,6 @@ export class Bridge extends Model {
     @Column()
     state_token: string;
 
-    // Bot token for slack
-    @Column({
-        unique: true
-    })
-    Token: string;
-
     @Column({
         default: true
     })
@@ -52,6 +46,12 @@ export class Bridge extends Model {
 
 @ChildEntity()
 export class SlackBridge extends Bridge {
+    // Bot token for slack
+    @Column({
+        unique: true
+    })
+    Token: string;
+
     // The ID of the team
     @Column({nullable:true})
     team_id: string;
@@ -73,6 +73,12 @@ export class SlackBridge extends Bridge {
 
 @ChildEntity()
 export class DiscordBridge extends Bridge {
+    // Tokens are not unique per bridge in discord
+    @Column({
+        unique: false
+    })
+    Token: string;
+
     // Server name - needed to use multiple 'servers' with a single discord app
     @Column()
     Server: string;
@@ -80,6 +86,25 @@ export class DiscordBridge extends Bridge {
     // Analogous to team_id in slack bridge
     @Column()
     guild_id: string;
+
+    @Column()
+    guild_name: string;
+
+    @Column({
+        default: true
+    })
+    AutoWebhooks: boolean;
+
+    @Column({
+        default: true
+    })
+    PreserveThreading: boolean;
+
+    @Column()
+    access_token: string;
+
+    @Column()
+    refresh_token: string;
 }
 
 @ChildEntity()

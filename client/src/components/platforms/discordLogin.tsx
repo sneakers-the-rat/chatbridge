@@ -50,7 +50,7 @@ export const DiscordLogin = ({
             color={bridge !== undefined ? 'success': undefined}
             disabled={installLink === undefined}
         >
-            {installLink === undefined ? 'Waiting for Install Link...' : 'Add to Slack'}
+            {installLink === undefined ? 'Waiting for Install Link...' : 'Add to Discord'}
         </Button>
     )
 }
