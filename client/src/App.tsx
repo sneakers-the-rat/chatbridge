@@ -1,8 +1,7 @@
 import React from 'react';
-import logo from './logo.svg';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { yellow} from "@mui/material/colors";
-import './sass/index.scss';
+import { yellow } from "@mui/material/colors";
+
 
 const theme = createTheme({
     palette:{

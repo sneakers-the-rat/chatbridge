@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 
-import {Group} from '../../types/group'
-import {groupInvite} from '../../api/groups'
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+
+import {groupInvite} from '../../api/groups'
+import {Group} from '../../types/group'
+
 
 export interface JoinGroupProps {
   group: Group;

@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import Tab from '@mui/material/Tab';
-import TabsList from '@mui/base/TabsList';
 import Tabs from '@mui/material/Tabs';
 import Box from "@mui/material/Box";
 import { styled } from '@mui/material/styles';

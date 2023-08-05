@@ -1,12 +1,13 @@
+import {useState, useEffect} from "react";
 
-import {Group} from "../../types/group";
+import Button from '@mui/material/Button';
+
 import {JoinStep} from './joinStep';
 import {JoinLogin} from "./joinLogin";
-import {useState, useEffect} from "react";
-import Button from '@mui/material/Button';
-import {createChannel} from "../../api/channel";
 import {JoinBridge} from "./joinBridge";
 import JoinChannel from "./joinChannel";
+import {createChannel} from "../../api/channel";
+import {Group} from "../../types/group";
 import {bridgeType} from "../../types/bridge";
 
 export interface JoinFormProps {

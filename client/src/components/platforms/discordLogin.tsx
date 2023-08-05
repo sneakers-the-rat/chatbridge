@@ -1,7 +1,9 @@
 import {useEffect, useRef, useState} from "react";
+
+import Button from "@mui/material/Button";
+
 import {getDiscordInstallURL} from "../../api/discord";
 import {getBridgeByStateToken} from "../../api/bridge";
-import Button from "@mui/material/Button";
 
 
 export const DiscordLogin = ({

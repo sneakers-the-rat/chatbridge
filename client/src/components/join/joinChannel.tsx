@@ -1,15 +1,17 @@
+import {useEffect, useState} from "react";
+
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
-import {stepCompleteType} from "./joinForm";
 
+import {stepCompleteType} from "./joinForm";
 import {getSlackChannels, joinSlackChannel} from "../../api/slack";
-import {useEffect, useState} from "react";
+import {getDiscordChannels} from "../../api/discord";
+
 import {channelsType} from "../../types/channel";
 import {bridgeType} from "../../types/bridge";
-import {getDiscordChannels} from "../../api/discord";
 
 
 export interface JoinChannelProps {
