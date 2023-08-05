@@ -8,7 +8,10 @@
   "scripts": {
     "start:client": "npm run start --prefix client",
     "start:server": "npm run start --prefix server",
-    "start": "concurrently -k -n \"CLIENT,SERVER\" -c \"bgBlue.bold,bgRed.bold\" \"npm run start:client\" \"npm run start:server\""
+    "start": "concurrently -k -n \"CLIENT,SERVER\" -c \"bgBlue.bold,bgRed.bold\" \"npm run start:client\" \"npm run start:server\"",
+    "build:client": "npm run build --prefix client",
+    "build:server": "npm run build --prefix server",
+    "build": "npm run build:client; npm run build:server"
   },
   "dependencies": {},
   "devDependencies": {
