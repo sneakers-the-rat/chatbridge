@@ -3,8 +3,6 @@ const { merge } = require('webpack-merge')
 const path = require( 'path' );
 
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
-const ReactRefreshTypeScript = require('react-refresh-typescript');
-
 
 const common = require('./webpack.common.js')
 
