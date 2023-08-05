@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "description": "bridging a bunch of chats together",
   "main": "index.js",
-  "repository": "https://git.jon-e.net/jonny/ucla-chat",
-  "author": "sneakers-the-rat <JLSaunders987@gmail.com>",
+  "repository": "https://git.jon-e.net/jonny/chatbridge",
+  "author": "sneakers-the-rat <j@nny.fyi>",
   "license": "AGPL-3.0",
   "private": true,
   "scripts": {
     "start": "NODE_ENV=development ts-node-dev --respawn --transpile-only --exit-child src/app.ts",
     "build": "../node_modules/.bin/tsc -p .",
     "typeorm": "../node_modules/.bin/typeorm-ts-node-commonjs",
-    "migrate": "rm -rf build && yarn build && yarn ../node_modules/.bin/typeorm migration:generate ./src/migrations/added-user-entity -d ./src/utils/data-source.ts",
-    "db:push": "rm -rf build && yarn build && yarn ../node_modules/.bin/typeorm migration:run -d src/utils/data-source.ts",
     "importData": "npx ts-node-dev --transpile-only --exit-child  src/data/seeder.ts",
     "test": "jest"
   },

@@ -10,7 +10,7 @@
     "strictPropertyInitialization": false,
     "strictNullChecks": false,
     "skipLibCheck": true,
-    "outDir": "./build",
+    "outDir": "./dist",
     "rootDir": ".",
 
   },
