@@ -1,9 +1,40 @@
 PORT={{ chatbridge_api_port }}
-NODE_ENV=development
+NODE_ENV={{ CHATBRIDGE_MODE }}
 NODE_CONFIG_DIR={{ chatbridge_user_home}}/chatbridge/server/config
+
+LOG_DIR={{ chatbridge_log_dir }}
+# Full URL that chatbridge is hosted at, including any sub-paths
+# Used in the discord handler to generate an OAUTH2 callback URL
+BASE_URL={{ chatbridge_base_url }}
 
 POSTGRES_HOST=127.0.0.1
 POSTGRES_PORT={{ chatbridge_postgres_port }}
 POSTGRES_USER={{ chatbridge_postgres_user }}
 POSTGRES_PASSWORD={{ chatbridge_postgres_password }}
 POSTGRES_DB={{ chatbridge_postgres_db }}
+
+# Used to log in to create and manage groups
+ADMIN_TOKEN={{ chatbridge_admin_token }}
+
+# Keys used to sign cookies used for authentication
+COOKIE_KEY_1={{ lookup('community.general.random_string', base64=True, length=24) }}
+COOKIE_KEY_2={{ lookup('community.general.random_string', base64=True, length=24) }}
+
+# Location of the matterbridge binary!
+MATTERBRIDGE_BINARY={{ chatbridge_matterbridge_binary }}
+MATTERBRIDGE_CONFIG_DIR={{ chatbridge_matterbridge_configs }}
+
+# ---------------
+## Platforms
+# ---------------
+
+# Slack -----------------
+SLACK_CLIENT_ID={{ chatbridge_slack_client_id }}
+SLACK_CLIENT_SECRET={{ chatbridge_slack_client_secret }}
+
+# Discord ----------------
+DISCORD_TOKEN={{ chatbridge_discord_token }}
+DISCORD_CLIENT_ID={{ chatbridge_discord_client_id }}
+DISCORD_CLIENT_SECRET={{ chatbridge_discord_client_secret }}
+
+

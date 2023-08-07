@@ -11,6 +11,9 @@
 - name: install chatbridge
   import_tasks: chatbridge.yml
 
+- name: install matterbridge
+  import_tasks: matterbridge.yml
+
 - name: configure chatbridge
   import_tasks: config.yml
 

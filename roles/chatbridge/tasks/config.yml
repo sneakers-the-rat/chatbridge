@@ -3,7 +3,7 @@
   become_user: "{{ chatbridge_user }}"
   template:
     src: chatbridge_env.j2
-    dest: "{{ chatbridge_user_home}}/.env"
+    dest: "{{ chatbridge_user_home}}/chatbridge/server/.env"
     mode: "600"
 
 - name: create https nginx config
@@ -34,4 +34,23 @@
     state: link
     src: /etc/nginx/sites-available/chatbridge.conf
     dest: /etc/nginx/sites-enabled/chatbridge.conf
+
+- name: create systemd service
+  become: yes
+  template:
+    src: systemd_chatbridge.service.j2
+    dest: /etc/systemd/system/chatbridge.service
+
+- name: enable service
+  become: yes
+  service:
+    name: chatbridge
+    enabled: yes
+    state: started
+
+- name: restart service
+  become: yes
+  service:
+    name: chatbridge
+    state: restarted
 

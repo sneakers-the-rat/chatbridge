@@ -8,4 +8,40 @@
   register: command_result
   failed_when: "command_result.failed and 'Local modifications' not in command_result.msg"
 
+- name: ensure npm present
+  become: yes
+  apt:
+    name: npm
+    state: present
+
+- name: ensure yarn present
+  become: yes
+  npm:
+    global: true
+    name: yarn
+
+- name: install yarn dependencies
+  become: yes
+  become_user: "{{ chatbridge_user }}"
+  community.general.yarn:
+    path: "{{chatbridge_user_home }}/chatbridge"
+
+- name: build package
+  become: yes
+  become_user: "{{ chatbridge_user }}"
+  shell:
+    chdir: "{{ chatbridge_user_home }}/chatbridge"
+    cmd: npm run build
+    creates: "{{ chatbridge_user_home }}/chatbridge/server/dist"
+
+- name: copy client to public directory
+  become: yes
+  copy:
+    remote_src: true
+    src: "{{ chatbridge_user_home }}/chatbridge/client/dist/"
+    dest: "{{ chatbridge_public_dir }}"
+
+
+
+
 

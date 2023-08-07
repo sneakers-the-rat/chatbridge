@@ -13,6 +13,21 @@
     home: "{{ chatbridge_user_home }}"
     system: true
 
+- name: create chatbridge log directory
+  become: yes
+  file:
+    mode: '700'
+    state: directory
+    owner: "{{ chatbridge_user }}"
+    path: "{{ chatbridge_log_dir }}"
+
+- name: create chatbridge matterbridge config directory
+  become: yes
+  file:
+    mode: '700'
+    state: directory
+    owner: "{{ chatbridge_user }}"
+    path: "{{ chatbridge_matterbridge_configs }}"
 
 
 - name: Create public directory and give permissions to www-data
@@ -22,12 +37,12 @@
     state: directory
     group: "www-data"
     owner: "{{ chatbridge_user }}"
-    path: "{{ chatbridge_user_home }}/public"
+    path: "{{ chatbridge_public_dir }}"
 
 - name: Chmod home directory
   become: yes
   file:
-    mode: '755'
+    mode: '700'
     state: directory
-    group: "www-data"
+    path: "{{ chatbridge_user_home }}"
 

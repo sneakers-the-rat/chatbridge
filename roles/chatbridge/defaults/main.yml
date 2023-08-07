@@ -5,19 +5,44 @@ CHATBRIDGE_MODE: development
 # development options
 chatbridge_webpack_port: 8080
 
+# general options
+chatbridge_user: chatbridge
+chatbridge_user_home: /var/lib/chatbridge
+chatbridge_log_dir: /var/lib/chatbridge/logs
+chatbridge_matterbridge_binary: /var/lib/chatbridge/matterbridge
+chatbridge_matterbridge_configs: /var/lib/chatbridge/configs
+# directory that the public web content should be deployed to on build
+chatbridge_public_dir: /var/www/html/chatbridge
+
+# public URL used in discord API callbacks
+chatbridge_base_url: CHANGEME
+# admin token used to create groups
+chatbridge_admin_token: CHANGEME
+
+# postgres config
 chatbridge_postgres_user: chatbridge
 chatbridge_postgres_password: CHANGEME
 chatbridge_postgres_db: chatbridge
 chatbridge_postgres_port: 6500
 
-chatbridge_user: chatbridge
-chatbridge_user_home: /var/lib/chatbridge
+# slack config
+chatbridge_slack_client_id: CHANGEME
+chatbridge_slack_client_secret: CHANGEME
+
+# discord config
+chatbridge_discord_token: CHANGEME
+chatbridge_discord_client_id: CHANGEME
+chatbridge_discord_client_secret: CHANGEME
+
+
 
 # Where, beneath the root domain, we should host the site
-# (used in nginx configs)
+# (used in nginx configs, distinct from baseurl, which is used by discord)
 chatbridge_fqdn: localhost
 chatbridge_webroot: ""
 chatbridge_api_port: 8999
 
 # false gives you an http-only nginx config
 chatbridge_https: true
+
+

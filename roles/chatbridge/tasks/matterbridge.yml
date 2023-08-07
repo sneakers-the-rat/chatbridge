@@ -1,0 +1,16 @@
+- name: Get Latest matterbridge version info
+  uri:
+    url: https://api.github.com/repos/42wim/matterbridge/releases/latest
+    return_content: true
+  register: matterbridge_latest
+
+- name: Download matterbridge binary
+  become: yes
+  become_user: "{{ chatbridge_user }}"
+  loop: "{{ matterbridge_latest.json.assets }}"
+  when:
+    - "'linux-64bit' in item.name"
+  get_url:
+    url: "{{ item.browser_download_url }}"
+    dest: "{{ chatbridge_matterbridge_binary }}"
+    creates: "{{ chatbridge_matterbridge_binary }}"

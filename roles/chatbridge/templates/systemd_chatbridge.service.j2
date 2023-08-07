@@ -1,0 +1,14 @@
+[Unit]
+Description=Chatbridge
+
+[Service]
+ExecStart=/usr/local/bin/node {{ chatbridge_user_home }}/chatbridge/server/dist/src/app.js
+Restart=always
+User={{ chatbridge_user }}
+Group=nogroup
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+WorkingDirectory={{ chatbridge_user_home }}/chatbridge/server/dist/src/
+
+[Install]
+WantedBy=multi-user.target

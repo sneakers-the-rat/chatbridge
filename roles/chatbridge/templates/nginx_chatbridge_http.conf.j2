@@ -15,15 +15,10 @@ server {
     {% else %}
 
     location {{ chatbridge_webroot }} {
-        root {{ chatbridge_user_home }}/public;
+        root {{ chatbridge_public_dir }};
         try_files $uri $uri/ $uri/index.html /index.html index.html;
     }
 
-    location {{ chatbridge_webroot }}/ {
-        rewrite ^{{ chatbridge_webroot }}?(/.*)$ $1 break;
-        root {{ chatbridge_user_home }}/public;
-        try_files $uri $uri/ $uri/index.html =404;
-    }
     {% endif %}
 
 }

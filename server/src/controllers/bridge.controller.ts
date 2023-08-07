@@ -16,7 +16,6 @@ export const getBridgeHandler = async(
             select: {
                 Protocol: true,
                 Label: true,
-                team_name: true,
                 id: true
             }
         })
