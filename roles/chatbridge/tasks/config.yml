@@ -5,6 +5,18 @@
     src: chatbridge_env.j2
     dest: "{{ chatbridge_user_home}}/chatbridge/server/.env"
     mode: "600"
+  when:
+    - CHATBRIDGE_MODE == 'development'
+
+- name: create production .env
+  become: yes
+  become_user: "{{ chatbridge_user }}"
+  template:
+    src: chatbridge_env.j2
+    dest: "{{ chatbridge_user_home}}/chatbridge/server/dist/.env"
+    mode: "600"
+  when:
+    - CHATBRIDGE_MODE == 'production'
 
 - name: create https nginx config
   become: yes

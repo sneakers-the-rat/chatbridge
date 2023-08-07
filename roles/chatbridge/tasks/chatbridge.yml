@@ -39,7 +39,7 @@
   copy:
     remote_src: true
     src: "{{ chatbridge_user_home }}/chatbridge/client/dist/"
-    dest: "{{ chatbridge_public_dir }}"
+    dest: "/var/www/html{{ chatbridge_webroot }}"
 
 
 

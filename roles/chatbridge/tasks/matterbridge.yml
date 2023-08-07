@@ -13,4 +13,3 @@
   get_url:
     url: "{{ item.browser_download_url }}"
     dest: "{{ chatbridge_matterbridge_binary }}"
-    creates: "{{ chatbridge_matterbridge_binary }}"

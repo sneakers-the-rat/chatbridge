@@ -16,7 +16,8 @@ server {
 
     location {{ chatbridge_webroot }} {
         root {{ chatbridge_public_dir }};
-        try_files $uri $uri/ $uri/index.html /index.html index.html;
+        index index.html;
+        try_files $uri $uri/ $uri/index.html =404;
     }
 
     {% endif %}

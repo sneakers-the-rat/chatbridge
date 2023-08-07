@@ -23,7 +23,7 @@ chatbridge_admin_token: CHANGEME
 chatbridge_postgres_user: chatbridge
 chatbridge_postgres_password: CHANGEME
 chatbridge_postgres_db: chatbridge
-chatbridge_postgres_port: 6500
+chatbridge_postgres_port: 5432
 
 # slack config
 chatbridge_slack_client_id: CHANGEME
