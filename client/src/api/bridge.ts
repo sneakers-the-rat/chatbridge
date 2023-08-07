@@ -3,9 +3,7 @@ export const getBridgeByStateToken = (callback: CallableFunction) => {
     fetch('api/bridge')
         .then(res => res.json())
         .then((res) => {
-            console.log('bridge result', res)
             if (res.status === 'success'){
-                console.log('successful get bridge')
                 callback(res.data)
             }
         })

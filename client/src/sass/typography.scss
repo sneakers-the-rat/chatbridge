@@ -10,6 +10,16 @@
   }
 }
 
+p a {
+  background-color: $color-primary;
+  color: $color-background;
+  padding: 0.2em;
+  font: {
+    family: "Courier", monospace;
+  }
+  border-radius: 3px;
+}
+
 code {
   font: {
     family: 'Courier', 'Courier New', monospace;

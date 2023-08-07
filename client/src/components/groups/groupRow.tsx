@@ -32,8 +32,8 @@ export default function GroupRow(
             <TableCell component="th" scope="row">
                 {name}
             </TableCell>
-            <TableCell align="right">{created_at}</TableCell>
             <TableCell align="right">{invite_token}</TableCell>
+            <TableCell align="right">{created_at}</TableCell>
             <TableCell align="right">
                 <IconButton
                     onClick={handleDeleteGroup}

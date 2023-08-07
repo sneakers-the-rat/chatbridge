@@ -15,7 +15,7 @@ const scopes = ['bot', 'channels:write', 'channels:write.invites', 'chat:write:b
 const slackBridgeRepository = AppDataSource.getRepository(SlackBridge)
 const groupRepository = AppDataSource.getRepository(Group)
 
-const SLACK_COOKIE_NAME = "slack-oauth-state";
+// const SLACK_COOKIE_NAME = "slack-oauth-state";
 
 const slackConfig = config.get<slackConfigType>('slackConfig');
 
@@ -45,7 +45,7 @@ export const SlackInstallLinkHandler = async(
            state_token
     );
 
-    res.cookie(SLACK_COOKIE_NAME, state_token, { maxAge: 60*5 })
+    // res.cookie(SLACK_COOKIE_NAME, state_token, { maxAge: 60*5 })
     res.status(200).json({
         status: 'success',
         data: {
@@ -78,7 +78,9 @@ export const SlackCallbackHandler = async(
 
           // check if we have an entity
           let bridge = await slackBridgeRepository.findOneBy({Token: installation.bot.token})
+          logger.debug('found existing bridge %s', bridge)
           if (!bridge){
+              logger.debug('creating new bridge')
               bridge = await slackBridgeRepository.create(bridge_data);
               await slackBridgeRepository.save(bridge);
               logger.debug('created bridge')

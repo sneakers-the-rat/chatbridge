@@ -4,6 +4,10 @@
   align-items: flex-start;
   gap: 2em;
 
+  @media (max-width: $breakpoint-mobile) {
+    gap: 0.5em;
+  }
+
   &>div {
     flex-basis: 50%;
   }
@@ -39,7 +43,9 @@
   gap: 2em;
   align-items: flex-start;
 
-
+  @media (max-width: $breakpoint-mobile){
+    gap: 0.5em;
+  }
 
   .Input {
     flex-basis: 70%;

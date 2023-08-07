@@ -30,18 +30,31 @@ export function JoinStep(
     return(
     <Accordion
         disabled={disabled}
+        id={id}
     >
         <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1bh-content"
             id="panel1bh-header"
         >
-            <Typography sx={{ width: '33%', flexShrink: 0 }}>
+            <Typography sx={details === '' ?
+                {
+                    width:'66%',
+                    flexGrow: 1
+                }
+                :
+                {
+                    width:'33%',
+                    flexShrink: 0
+                }
+            }>
                 { title }
             </Typography>
+            {details !== '' ?
             <Typography sx={{ color: 'text.secondary', flexGrow: 1 }}>
                 { details }
             </Typography>
+            : undefined}
             {
                 completed ?
                     <TaskAltIcon color={"success"}/>
@@ -50,9 +63,7 @@ export function JoinStep(
             }
         </AccordionSummary>
         <AccordionDetails>
-            <Typography>
                 { children }
-            </Typography>
         </AccordionDetails>
     </Accordion>
     )

@@ -30,8 +30,8 @@ export default function ModePanel() {
               onChange={handleChange}
               selectionFollowsFocus>
             {/*<TabsList className={"TabsList"}>*/}
-                <Tab label={"Join Group"}></Tab>
-                <Tab label={"Create Group"}></Tab>
+                <Tab className={"Tab"} label={"Join Group"}></Tab>
+                <Tab className={"Tab"} label={"Create Group"}></Tab>
             {/*</TabsList>*/}
 
         </StyledTabs>

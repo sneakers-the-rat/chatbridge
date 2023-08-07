@@ -36,7 +36,7 @@ const JoinChannel = ({
 
 
     useEffect(() => {
-        if (bridge){
+        if (bridge && !channels){
             switch(platform){
                 case "Slack":
                     getSlackChannels(setChannels)

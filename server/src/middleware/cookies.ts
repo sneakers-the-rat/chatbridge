@@ -19,7 +19,7 @@ export const cookieMiddleware = cookieSession({
     name: 'session',
     keys: [cookieConfig.key1, cookieConfig.key2],
     signed: true,
-
+    maxAge: 24*60*60*1000 // 24 hours
 })
 
 export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {

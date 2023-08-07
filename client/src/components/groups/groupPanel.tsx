@@ -22,8 +22,8 @@ export default function GroupPanel({
                     <TableHead>
                         <TableRow>
                             <TableCell>Group</TableCell>
-                            <TableCell align="right">Created At</TableCell>
                             <TableCell align="right">Invite Token</TableCell>
+                            <TableCell align="right">Created At</TableCell>
                             <TableCell align="right">Delete</TableCell>
                         </TableRow>
                     </TableHead>

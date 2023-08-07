@@ -29,7 +29,6 @@ export const JoinGroup = ({
       setAuthError(false);
       setErrorText('');
       setGroup(response.data)
-      console.log(response)
     }
   }
 

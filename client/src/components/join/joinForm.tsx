@@ -59,11 +59,11 @@ export const JoinForm = ({group}: JoinFormProps) => {
     return (
         <>
             <header className={'section-header'}>
-                Joining group: <code>{group.name}</code>
+                <code>{group.name}</code>
             </header>
         <JoinStep
             title={"1) Login"}
-            details={"Select your chat platform"}
+            // details={"Select your chat platform"}
             id={'login'}
             completed={stepComplete.login}
         >
@@ -78,7 +78,7 @@ export const JoinForm = ({group}: JoinFormProps) => {
         </JoinStep>
         <JoinStep
             title={"2) Configure Bridge"}
-            details={"Settings for all channels bridged from this platform"}
+            // details={"Settings for all channels bridged from this platform"}
             id={'bridge'}
             disabled={!stepComplete.login}
             completed={stepComplete.bridge}
@@ -92,7 +92,7 @@ export const JoinForm = ({group}: JoinFormProps) => {
         </JoinStep>
         <JoinStep
             title={"3) Select a channel!"}
-            details={"The bot will join :)"}
+            // details={"The bot will join :)"}
             id={'channel'}
             disabled={!stepComplete.login}
             completed={stepComplete.channel}

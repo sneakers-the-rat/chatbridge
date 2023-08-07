@@ -11,6 +11,8 @@
   //}
   border: 2px solid $color-primary;
   height:100%;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
 .App-Container {
@@ -23,6 +25,11 @@
   width:100%;
   height:100%;
   box-sizing: border-box;
+  
+  @media (max-width: $breakpoint-mobile) {
+    padding: 0;
+    box-sizing: border-box;
+  }
 }
 
 
@@ -37,17 +44,49 @@
   }
 }
 
-.App-header {
-  text-align: center;
-  margin: {
-    top: 1em;
-  }
+.App-header-bar{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-direction: row;
+  padding: 0.5em 0.5em;
+  gap: 0.5em;
+  font: {
+    family: "Courier", monospace;
+  }
+
+  background: repeating-linear-gradient(
+    45deg,
+    $color-primary,
+    $color-primary 20px,
+    $color-background 20px,
+    $color-background 40px
+  );
+
+  .header-padding {
+    flex-grow: 1;
+  }
+  .App-header-item {
+    font: {
+      family: "Courier", monospace;
+    }
+  }
+}
+
+
+
+.App-header {
+  font: {
+    size: calc(10px + 2vmin);
+    weight: bold;
+  }
+  margin: auto;
+  color: $color-background;
+  background-color: $color-primary;
+  padding: 0.25em;
+  text-align: left;
+  //border-radius: 4px;
+  //box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2),
+  //  0px 4px 5px 0px rgba(0,0,0,0.14),
+  //  0px 1px 10px 0px rgba(0,0,0,0.12);
 }
 
 .App-link {
