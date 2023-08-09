@@ -47,22 +47,29 @@ AppDataSource.initialize()
     });
 
     const port = config.get<number>('port');
-    app.listen(port);
+    const server = app.listen(port);
     logger.info(`Server started on port: ${port}`)
 
     await MatterbridgeManager.spawnAll();
     let proclist = await MatterbridgeManager.processes;
     logger.info('Spawned group processes: %s', proclist);
 
+
+      //  Register signal handlers
+      process.on('SIGTERM', () => {
+          logger.debug('killing matterbridge from SIGTERM')
+          killMatterbridge()
+          server.close()
+            process.exit(0)
+      })
+      process.on('exit', () => {
+          logger.debug('killing matterbridge from exit event')
+          killMatterbridge()
+          server.close()
+      })
+
+
   })
 
 // Kill matterbridge processes on app exit.
 
-process.on('SIGTERM', () => {
-    logger.debug('killing matterbridge from SIGTERM')
-   killMatterbridge()
-})
-process.on('exit', () => {
-    logger.debug('killing matterbridge from exit event')
-    killMatterbridge()
-})
