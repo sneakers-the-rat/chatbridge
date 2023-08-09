@@ -71,6 +71,9 @@ class MatterbridgeManager {
     await writeGroupConfig(group_name, group_filename);
 
     pm2.connect(async(err:any) => {
+      if (err){
+        logger.error('Error connecting to pm2: %s', err)
+      }
       if (!this.process_list.includes(group_name_slug)) {
         logger.info('Spawning new matterbridge process: %s', group_name_slug)
         await pm2.start(
