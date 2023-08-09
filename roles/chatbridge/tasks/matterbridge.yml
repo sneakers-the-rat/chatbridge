@@ -13,3 +13,9 @@
   get_url:
     url: "{{ item.browser_download_url }}"
     dest: "{{ chatbridge_matterbridge_binary }}"
+
+- name: Enable execution by matterbridge user
+  file:
+    path: "{{ chatbridge_matterbridge_binary }}"
+    mode: '744'
+    owner: "{{ chatbridge_user }}"

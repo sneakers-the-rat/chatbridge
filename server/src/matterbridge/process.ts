@@ -113,9 +113,12 @@ class MatterbridgeManager {
     let groups = await groupRepository.find({
       select: {name: true}
     })
-    groups.map(
-      (group) => this.spawnProcess(group.name)
-    )
+    logger.info('Got groups to spawn %s', groups)
+
+    for (let group of groups){
+      await this.spawnProcess(group.name)
+    }
+
   }
 
   get processes(): Promise<Process[]> {
