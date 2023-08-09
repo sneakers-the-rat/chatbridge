@@ -93,6 +93,9 @@ class MatterbridgeManager {
               if (err) {
                 logger.error('error restarting matterbridge process', err)
               }
+              if (proc) {
+                logger.info('process restart info %s', proc)
+              }
             }
         )
       }
