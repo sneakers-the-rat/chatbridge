@@ -70,7 +70,7 @@ class MatterbridgeManager {
 
     await writeGroupConfig(group_name, group_filename);
 
-    pm2.connect(async(err:any) => {
+    await pm2.connect(async(err:any) => {
       if (err){
         logger.error('Error connecting to pm2: %s', err)
       }
